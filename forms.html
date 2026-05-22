@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms Registry - CHITA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --c-dark: #392a28;
+            --c-primary: #246a73;
+            --c-accent: #368f8b;
+            --c-light: #f3dfc1;
+            --c-border: #ddbea8;
+            --bg-main: #faf9f6;
+            --text-main: #392a28;
+            --text-muted: #6b5b59;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+        }
+
+        .back-bar {
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            color: var(--c-primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+        }
+
+        .back-link:hover {
+            color: var(--c-accent);
+        }
+
+        /* PAGE HEADER STYLING */
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--c-dark);
+        }
+
+        .page-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            margin-bottom: 20px;
+        }
+
+        /* FAINT DIVISION LINE ARCHITECTURE */
+        .page-header .divider {
+            height: 1px;
+            width: 100%;
+            background: rgba(36, 106, 115, 0.15);
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--c-border);
+            box-shadow: 0 4px 12px rgba(57, 42, 40, 0.03);
+            margin-bottom: 24px;
+        }
+
+        .ch {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--c-border);
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--c-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cb {
+            padding: 24px;
+        }
+
+        .form-pane {
+            display: none;
+        }
+
+        .form-pane.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-select-card {
+            background: white;
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: left;
+        }
+
+        .form-select-card:hover {
+            border-color: var(--c-primary);
+            background: rgba(36, 106, 115, 0.02);
+            transform: translateY(-2px);
+        }
+
+        .form-select-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--c-dark);
+            margin-bottom: 6px;
+        }
+
+        .form-select-card p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--c-dark);
+            background: var(--bg-main);
+            transition: 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--c-primary);
+            background: white;
+        }
+
+        .size-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        .size-matrix th {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .size-matrix td {
+            padding: 6px 8px;
+        }
+
+        .size-matrix input[type="number"] {
+            padding: 8px;
+            background: white;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-p {
+            background: var(--c-primary);
+            color: white;
+        }
+
+        .btn-p:hover {
+            background: var(--c-accent);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--c-border);
+            color: var(--c-dark);
+        }
+
+        /* GLOBAL FOOTER STYLING */
+        footer {
+            margin-top: 60px;
+            padding: 40px 0;
+            border-top: 1px solid var(--c-border);
+            color: var(--text-muted);
+            font-size: 11px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="back-bar">
+            <button id="dynamicBackBtn" class="back-link" onclick="handleBackNavigation()">
+                ← Return to Dashboard
+            </button>
+        </div>
+
+        <div class="page-header">
+            <h1 id="mainRegistryTitle">Forms Intake Registry</h1>
+            <p id="mainRegistrySubtitle">Select an administrative or clinical operational template to begin data collection.</p>
+            <div class="divider"></div>
+        </div>
+
+        <div id="pane-all" class="form-pane active">
+            <div class="form-grid">
+                <div class="form-select-card" onclick="switchForm('catheter')">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-primary); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical Supply</span>
+                    </div>
+                    <h3>Medical Materials Application (Cones)</h3>
+                    <p>Request cone catheter supplies from Child-Help International distribution networks.</p>
+                </div>
+
+                <div class="form-select-card" onclick="switchForm('catheter-sizes')">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-primary); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical Supply</span>
+                    </div>
+                    <h3>Medical Materials Application (Catheters)</h3>
+                    <p>Request sizing-specific pediatric catheters broken down by CH metrics and tube lengths.</p>
+                </div>
+
+                <div class="form-select-card" onclick="switchForm('enema')">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-primary); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical Supply</span>
+                    </div>
+                    <h3>Medical Materials Application (Enema Bags)</h3>
+                    <p>Request supportive bowel management supply units for distribution center logistics.</p>
+                </div>
+
+                <div class="form-select-card" onclick="switchForm('oxybutynin')">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(54, 143, 139, 0.1); color: var(--c-accent); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Pharmaceutical</span>
+                    </div>
+                    <h3>Medical Materials Application (Oxybutynin)</h3>
+                    <p>Request capsule allocations for neurogenic bladder management and urological care plans.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="pane-catheter" class="form-pane">
+            <div class="card">
+                <div class="ch">
+                    <span>Application Form Setup — Cones</span>
+                    <span style="font-size: 10px; background: var(--c-primary); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help International</span>
+                </div>
+                <div class="cb">
+                    <form id="catheterForm" onsubmit="event.preventDefault(); alert('Cones Application Form successfully logged.'); window.location.href='admin.html';">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">1. Applicant Information</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div style="grid-column: span 2;" class="field-group"><label>Project / Applicant Name</label><input type="text" required></div>
+                            <div style="grid-column: span 2;" class="field-group"><label>Full Address</label><textarea rows="2" required></textarea></div>
+                            <div class="field-group"><label>Country</label><input type="text" required></div>
+                            <div class="field-group"><label>Contact Person</label><input type="text" required></div>
+                            <div class="field-group"><label>Email Address</label><input type="email" required></div>
+                            <div class="field-group"><label>Phone Number</label><input type="tel" required></div>
+                        </div>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">2. Clinical Oversight</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div class="field-group"><label>Name of Doctor in Charge</label><input type="text" required></div>
+                            <div class="field-group"><label>Name of Nurse in Charge of CIC</label><input type="text" required></div>
+                            <div style="grid-column: span 2;" class="field-group"><label>Estimated # of children seen per year with Spina Bifida (with or without Hydrocephalus)</label><input type="number" min="0" required></div>
+                        </div>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">3. Requested Materials</h3>
+                        <div style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px;">
+                            <div class="field-group" style="margin-bottom: 0;"><label>Total Catheter Units (Cones) Requested</label><input type="number" min="1" placeholder="e.g. 500" required></div>
+                        </div>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">4. Regulatory Compliance</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
+                            <label><input type="checkbox" required> I confirm compliance with CHITA humanitarian standards.</label>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                            <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
+                            <button type="submit" class="btn btn-p">Log Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="pane-catheter-sizes" class="form-pane">
+            <div class="card">
+                <div class="ch"><span>Application Form — Sized Catheters</span></div>
+                <div class="cb">
+                    <form id="catheterSizesForm" onsubmit="event.preventDefault(); alert('Sized Catheters logged.'); window.location.href='admin.html';">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                            <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
+                            <button type="submit" class="btn btn-p">Log Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="pane-enema" class="form-pane">
+            <div class="card">
+                <div class="ch"><span>Application Form — Enema Bags</span></div>
+                <div class="cb">
+                    <form id="enemaForm" onsubmit="event.preventDefault(); alert('Enema Bags logged.'); window.location.href='admin.html';">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                            <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
+                            <button type="submit" class="btn btn-p">Log Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="pane-oxybutynin" class="form-pane">
+            <div class="card">
+                <div class="ch"><span>Application Form — Oxybutynin</span></div>
+                <div class="cb">
+                    <form id="oxybutyninForm" onsubmit="event.preventDefault(); alert('Oxybutynin logged.'); window.location.href='admin.html';">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                            <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
+                            <button type="submit" class="btn btn-accent" style="color: white;">Log Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>CHITA Supply Registry © 2026 Child-Help International</p>
+            <p>
+                <a href="mailto:janet.manoni@child-help.international" style="color: var(--c-primary); text-decoration: none; font-weight: 700;">Contact Support</a> | 
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Clinical Sizing Guidelines</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        let currentFormId = 'all';
+        function handleBackNavigation() {
+            if (currentFormId === 'all') { window.location.href = 'admin.html'; } 
+            else { switchForm('all'); }
+        }
+        function switchForm(formId) {
+            currentFormId = formId;
+            document.querySelectorAll('.form-pane').forEach(pane => pane.classList.remove('active'));
+            const targetPane = document.getElementById('pane-' + formId);
+            if (targetPane) {
+                targetPane.classList.add('active');
+                window.location.hash = formId;
+            }
+            // Add header update logic here
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialHash = window.location.hash.replace('#', '');
+            if (initialHash && document.getElementById('pane-' + initialHash)) {
+                switchForm(initialHash);
+            } else {
+                switchForm('all');
+            }
+        });
+    </script>
+</body>
+</html>

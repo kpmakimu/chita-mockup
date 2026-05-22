@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CHITA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --c-dark: #392a28;
+            --c-primary: #246a73;
+            --c-accent: #368f8b;
+            --c-light: #f3dfc1;
+            --c-border: #ddbea8;
+            --bg-main: #faf9f6;
+            --text-main: #392a28;
+            --text-muted: #6b5b59;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .sc {
+            display: none;
+        }
+
+        .sc.on {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* DESKTOP SIDEBAR */
+        .admin-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sidebar {
+            width: 260px;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--c-dark);
+            color: var(--c-light);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .sb-logo {
+            padding: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(243, 223, 193, 0.15);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sb-logo-img {
+            height: 42px;
+            width: auto;
+            background: white;
+            padding: 6px;
+            border-radius: var(--radius-md);
+            display: block;
+        }
+
+        .sb-item {
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            color: rgba(243, 223, 193, 0.6);
+            cursor: pointer;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: 0.2s;
+        }
+
+        .sb-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .sb-item.on {
+            background: var(--c-primary);
+            color: white;
+        }
+
+        /* ACCORDION INLINE DROPDOWN STYLING */
+        .sb-has-dropdown {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sb-chevron {
+            transition: transform 0.2s ease;
+            opacity: 0.45;
+            flex-shrink: 0;
+        }
+
+        .sb-has-dropdown.open .sb-chevron {
+            transform: rotate(180deg);
+            opacity: 0.9;
+        }
+
+        .sb-sub-group {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease-out;
+            display: flex;
+            flex-direction: column;
+            padding-left: 12px;
+        }
+
+        .sb-has-dropdown.open .sb-sub-group {
+            max-height: 240px;
+        }
+
+        .sb-sub-item {
+            padding: 10px 14px 10px 26px;
+            font-size: 12px;
+            color: rgba(243, 223, 193, 0.45);
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            margin-bottom: 2px;
+            transition: 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sb-sub-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(243, 223, 193, 0.85);
+        }
+
+        .sb-sub-item.on {
+            background: rgba(36, 106, 115, 0.2);
+            color: white;
+            font-weight: 500;
+        }
+
+        .sb-sec {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(243, 223, 193, 0.3);
+            padding: 24px 14px 8px;
+        }
+
+        .sb-foot {
+            margin-top: auto;
+            padding: 16px 14px;
+            border-top: 1px solid rgba(243, 223, 193, 0.1);
+        }
+
+        .sb-logout-btn {
+            color: rgba(243, 223, 193, 0.4);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .sb-logout-btn:hover {
+            color: var(--c-light);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-main);
+            min-width: 0;
+        }
+
+        .top-bar {
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid var(--c-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--c-dark);
+            padding: 4px;
+        }
+
+        .body-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        /* CARDS & UI COMPONENTS */
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-p {
+            background: var(--c-primary);
+            color: white;
+        }
+
+        .btn-p:hover {
+            background: var(--c-accent);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--c-border);
+            color: var(--c-dark);
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--c-border);
+            box-shadow: 0 4px 12px rgba(57, 42, 40, 0.03);
+            margin-bottom: 24px;
+        }
+
+        .ch {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--c-border);
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--c-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cb {
+            padding: 24px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--c-border);
+            border-bottom: 3px solid var(--c-accent);
+        }
+
+        .stat-box p:first-child {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .stat-box p:last-child {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--c-dark);
+            margin-top: 4px;
+        }
+
+        .dashboard-split-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .alignment-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+            align-items: stretch;
+        }
+
+        .align-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .align-col .card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0;
+        }
+
+        .align-col .card .cb {
+            flex: 1;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 8px;
+            background: var(--c-light);
+            border-radius: 10px;
+            margin: 0 12px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--c-accent);
+        }
+
+        /* TAB RUNWAY */
+        .tab-row {
+            display: flex;
+            padding-left: 12px;
+            align-items: flex-end;
+            height: 48px;
+            background: var(--c-border);
+            border-bottom: 1px solid var(--c-border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tab-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mini-tab {
+            position: relative;
+            flex: 1;
+            min-width: 90px;
+            justify-content: center;
+            padding: 12px 10px;
+            background: var(--c-border);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .mini-tab:hover {
+            background: var(--c-light);
+            color: var(--c-primary);
+        }
+
+        .mini-tab.on {
+            background: white;
+            color: var(--c-primary);
+            z-index: 5;
+        }
+
+        .mini-tab.on::before,
+        .mini-tab.on::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 15px;
+            height: 15px;
+        }
+
+        .mini-tab.on::before {
+            left: -15px;
+            background: radial-gradient(circle at 0 0, transparent 15px, white 16px);
+        }
+
+        .mini-tab.on::after {
+            right: -15px;
+            background: radial-gradient(circle at 100% 0, transparent 15px, white 16px);
+        }
+
+        .tab-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* CALENDAR VIEWS */
+        .cal-wrapper {
+            user-select: none;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cal-month {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--c-dark);
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+
+        .cal-day-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--c-border);
+            padding-bottom: 5px;
+        }
+
+        .cal-date {
+            font-size: 12px;
+            padding: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+
+        .cal-date:hover {
+            background: var(--c-light);
+            color: var(--c-dark);
+        }
+
+        .cal-date.today {
+            background: var(--c-primary);
+            color: white;
+            font-weight: 700;
+        }
+
+        .cal-date.event {
+            position: relative;
+            font-weight: 700;
+            color: var(--c-dark);
+        }
+
+        .cal-date.event::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--c-accent);
+            border-radius: 50%;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(57, 42, 40, 0.4);
+            z-index: 90;
+        }
+
+        /* FLOATING TRANSLUCENT DROPDOWN BOXES (NOTIFICATIONS & PROFILE) */
+        .notif-dropdown,
+        .profile-dropdown {
+            position: absolute;
+            top: 56px;
+            width: 320px;
+            background: rgba(36, 106, 115, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--c-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 32px rgba(36, 106, 115, 0.12);
+            display: none;
+            flex-direction: column;
+            z-index: 200;
+            animation: floatReveal 0.2s ease-out;
+        }
+
+        .notif-dropdown {
+            right: 180px;
+        }
+
+        .profile-dropdown {
+            right: 40px;
+            width: 240px;
+        }
+
+        @keyframes floatReveal {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notif-dropdown.active,
+        .profile-dropdown.active {
+            display: flex;
+        }
+
+        .dd-title-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(36, 106, 115, 0.15);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--c-primary);
+        }
+
+        .dd-scroll-frame {
+            padding: 16px;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .dd-preview-card {
+            background: rgba(255, 255, 255, 0.75);
+            border-left: 3px solid #e63946;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 8px rgba(36, 106, 115, 0.05);
+        }
+
+        .dd-empty-notice {
+            display: none;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 12px 0;
+        }
+
+        .dd-action-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(36, 106, 115, 0.15);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .dd-view-all-btn {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--c-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .dd-view-all-btn:hover {
+            color: var(--c-accent);
+        }
+
+        /* PROFILE DROPDOWN MENU LIST */
+        .profile-menu-list {
+            list-style: none;
+            padding: 8px;
+        }
+
+        .profile-menu-item {
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--c-dark);
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-menu-item:hover {
+            background: rgba(255, 255, 255, 0.75);
+            color: var(--c-primary);
+        }
+
+        /* RESPONSIVE BREAKPOINTS WITH BRAND HIDING LOGIC */
+        @media (max-width: 992px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.visible {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .sb-logo-img {
+                display: none !important;
+            }
+
+            .top-bar {
+                padding: 0 24px;
+            }
+
+            .notif-dropdown {
+                right: 120px;
+            }
+
+            .profile-dropdown {
+                right: 24px;
+            }
+
+            .body-area {
+                padding: 24px;
+            }
+
+            .stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-split-grid,
+            .alignment-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar h2 {
+                font-size: 14px;
+            }
+        }
+
+        /* NOTIFICATION BELL & HEADER PROFILE LAYOUT */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .notif-wrapper {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        .notif-wrapper:hover {
+            background: var(--c-light);
+            color: var(--c-primary);
+        }
+
+        .notif-bell {
+            color: var(--c-dark);
+        }
+
+        .notif-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 9px;
+            height: 9px;
+            background: #e63946;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .user-profile-block {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--radius-md);
+            transition: 0.2s;
+            user-select: none;
+        }
+
+        .user-profile-block:hover {
+            background: rgba(36, 106, 115, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sbOverlay" class="sidebar-overlay" onclick="toggleSidebar(false)"></div>
+
+    <div class="admin-layout">
+        <aside id="adminSidebar" class="sidebar">
+            <div class="sb-logo">
+                <img src="assets/Child-Help-Logo.png" alt="Logo" class="sb-logo-img">
+                <span>CHITA</span>
+            </div>
+
+            <div class="sb-sec">Dashboard</div>
+
+            <div class="sb-item on" onclick="asc('home', this)">
+                <span>Home</span>
+            </div>
+
+            <div class="sb-item" onclick="alert('Approvals queue coming soon...')">
+                <span>Approvals</span>
+            </div>
+
+            <div class="sb-item" onclick="alert('Master Admin Orders view coming soon...')">
+                <span>Orders</span>
+            </div>
+
+            <div class="sb-item" onclick="alert('Goods Received ledger coming soon...')">
+                <span>Deliveries</span>
+            </div>
+
+            <div class="sb-item"
+                onclick="asc('home', this); tabShow('p-dir', document.querySelector('[onclick*=\'p-dir\']'))">
+                <span>Facilities</span>
+            </div>
+
+
+            <div class="sb-sec">Modules</div>
+
+            <div class="sb-has-dropdown">
+                <div class="sb-item" onclick="toggleSubmenu(this)">
+                    <span>Hospital Personnel</span>
+                    <svg class="sb-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="sb-sub-group">
+                    <div class="sb-sub-item"
+                        onclick="asc('home', this); tabShow('u-mgmt', document.querySelector('[onclick*=\'u-mgmt\']'))">
+                        Staff</div>
+                    <div class="sb-sub-item" onclick="asc('pending', this)">Orders</div>
+                    <div class="sb-sub-item" onclick="alert('Patients view coming soon...')">Patients</div>
+                </div>
+            </div>
+
+            <div class="sb-has-dropdown">
+                <div class="sb-item" onclick="toggleSubmenu(this)">
+                    <span>Suppliers</span>
+                    <svg class="sb-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="sb-sub-group">
+                    <div class="sb-sub-item"
+                        onclick="asc('home', this); tabShow('f-dir', document.querySelector('[onclick*=\'f-dir\']'))">
+                        Vendors</div>
+                    <div class="sb-sub-item" onclick="alert('Supplier Orders view coming soon...')">Orders</div>
+                    <div class="sb-sub-item" onclick="alert('Invoices view coming soon...')">Invoices</div>
+                </div>
+            </div>
+
+            <div class="sb-has-dropdown">
+                <div class="sb-item" onclick="toggleSubmenu(this)">
+                    <span>Finance</span>
+                    <svg class="sb-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="sb-sub-group">
+                    <div class="sb-sub-item"
+                        onclick="asc('home', this); tabShow('a-invent', document.querySelector('[onclick*=\'a-invent\']'))">
+                        Payments</div>
+                    <div class="sb-sub-item" onclick="alert('Finance Orders view coming soon...')">Orders</div>
+                    <div class="sb-sub-item" onclick="alert('Inventory stock view coming soon...')">Inventory</div>
+                </div>
+            </div>
+
+            <div class="sb-sec">OTHER</div>
+
+            <div class="sb-item" onclick="alert('Performance Metric Analytics Triggered...')">
+                <span>Donors</span>
+            </div>
+            <div class="sb-item" onclick="alert('Performance Metric Analytics Triggered...')">
+                <span>User Management</span>
+            </div>
+            <div class="sb-item" onclick="alert('Performance Metric Analytics Triggered...')">
+                <span>Reports</span>
+            </div>
+
+
+            <div class="sb-foot">
+                <a href="#" class="sb-logout-btn"
+                    onclick="event.preventDefault(); alert('Logged out safely.'); window.location.href='login.html';">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    CLOSE SESSION
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button class="menu-toggle" onclick="toggleSidebar(true)" aria-label="Open Viewport Drawer Menu">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <h2 id="atitle" style="font-size:18px; font-weight:800; letter-spacing:-0.5px">Overview</h2>
+
+                <div class="header-actions">
+
+                    <div class="notif-wrapper" onclick="toggleNotifMenu(event)" title="View Urgent Actions">
+                        <svg class="notif-bell" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span id="queue-dot" class="notif-dot"></span>
+                    </div>
+
+                    <div id="dropdownCard" class="notif-dropdown">
+                        <div class="dd-title-header">Alert Notifications</div>
+                        <div class="dd-scroll-frame">
+                            <div id="dd-preview" class="dd-preview-card">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <span
+                                        style="background: #e63946; color: white; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">Urgent</span>
+                                    <p style="font-weight: 700; color: var(--c-dark); font-size: 12px;">Personnel
+                                        Clearance Required</p>
+                                </div>
+                                <p
+                                    style="color: var(--text-muted); font-size: 11px; line-height: 1.4; padding-left: 2px;">
+                                    P. Njoroge is awaiting site admin access confirmation protocols.</p>
+                            </div>
+                            <div id="dd-empty" class="dd-empty-notice">
+                                ✓ All access clearances are fully finalized.
+                            </div>
+                        </div>
+                        <div class="dd-action-footer">
+                            <span class="dd-view-all-btn" onclick="openAuthorizationsQueue()">View Authorization Queue
+                                &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="user-profile-block" onclick="toggleProfileMenu(event)">
+                        <div style="text-align:right">
+                            <p style="font-size:12px; font-weight:800">Administrator</p>
+                            <p style="font-size:10px; color:var(--text-muted)">Mbuyuni Hospital</p>
+                        </div>
+                        <div style="width:36px; height:36px; background:var(--c-border); border-radius:50%"></div>
+                    </div>
+
+                    <div id="profileDropdownCard" class="profile-dropdown">
+                        <div class="dd-title-header">Account Controls</div>
+                        <ul class="profile-menu-list">
+                            <li class="profile-menu-item" onclick="alert('Profile Configuration Modal Open...')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Profile
+                            </li>
+                            <li class="profile-menu-item" onclick="window.location.href='forms.html#all'">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                Forms
+                            </li>
+                            <li class="profile-menu-item" onclick="alert('Support Request Routing Online...')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                Support
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </header>
+
+            <div class="body-area">
+
+                <div id="s-home" class="sc on">
+                    <div class="stat-grid">
+                        <div class="stat-box">
+                            <p>ACTIVE STAFF</p>
+                            <p>214</p>
+                        </div>
+                        <div class="stat-box">
+                            <p>URGENT REQUESTS</p>
+                            <p id="stat-urgent-count" style="color:var(--c-primary)">12</p>
+                        </div>
+                        <div class="stat-box">
+                            <p>ACCEPTED ORDERS</p>
+                            <p>48</p>
+                        </div>
+                        <div class="stat-box">
+                            <p>PENDING PAYMENTS</p>
+                            <p>142</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-split-grid">
+                        <div class="card">
+                            <div class="ch">Activity Log</div>
+                            <div class="cb">
+                                <div
+                                    style="padding:16px 0; border-bottom:1px solid var(--c-border); display:flex; gap:12px; align-items: flex-start;">
+                                    <div
+                                        style="width:8px; height:8px; border-radius:50%; background:var(--c-primary); margin-top:5px; flex-shrink:0;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                            <p style="font-size:13px;"><strong>B. Kamau</strong> • <span
+                                                    style="color:var(--c-accent)">Regional Site A</span></p>
+                                            <span
+                                                style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(36, 106, 115, 0.1); color:var(--c-primary); text-transform: uppercase;">Pending</span>
+                                        </div>
+                                        <p style="font-size:12px; color:var(--text-muted)">Initiated Request #REQ-0440
+                                        </p>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:4px">2m ago</p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    style="padding:16px 0; border-bottom:1px solid var(--c-border); display:flex; gap:12px; align-items: flex-start;">
+                                    <div
+                                        style="width:8px; height:8px; border-radius:50%; background:var(--c-accent); margin-top:5px; flex-shrink:0;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                            <p style="font-size:13px;"><strong>F. Osei</strong> • <span
+                                                    style="color:var(--c-accent)">Central Warehouse</span></p>
+                                            <span
+                                                style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(54, 143, 139, 0.1); color:var(--c-accent); text-transform: uppercase;">Authorized</span>
+                                        </div>
+                                        <p style="font-size:12px; color:var(--text-muted)">Dispatched Procurement
+                                            #ORD-388</p>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:4px">1h ago</p>
+                                    </div>
+                                </div>
+
+                                <div style="padding:16px 0; display:flex; gap:12px; align-items: flex-start;">
+                                    <div
+                                        style="width:8px; height:8px; border-radius:50%; background:var(--c-accent); margin-top:5px; flex-shrink:0;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                            <p style="font-size:13px;"><strong>B. Walter</strong> • <span
+                                                    style="color:var(--c-accent)">Donor</span></p>
+                                            <span
+                                                style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(54, 143, 139, 0.1); color:var(--c-accent); text-transform: uppercase;">Authorized</span>
+                                        </div>
+                                        <p style="font-size:12px; color:var(--text-muted)">Posted payment configuration
+                                            for #ORD-543</p>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:4px">2h ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="ch">Inventory Alerts <span
+                                    style="background:#e63946; color:white; font-size:9px; padding:2px 6px; border-radius:4px;">Action
+                                    Needed</span></div>
+                            <div class="cb">
+                                <div style="margin-bottom: 20px;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                                        <span style="font-weight: 700;">Antiseptic Packs</span>
+                                        <span style="color: #e63946; font-weight: 800;">12% Left</span>
+                                    </div>
+                                    <div class="bar-track" style="background: #fce8e8;">
+                                        <div class="bar-fill" style="width: 12%; background: #e63946;"></div>
+                                    </div>
+                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Refill
+                                        required for Site B regional triage</p>
+                                </div>
+
+                                <div style="margin-bottom: 20px;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                                        <span style="font-weight: 700;">Syringes (2ml)</span>
+                                        <span style="color: #f59e0b; font-weight: 800;">32% Left</span>
+                                    </div>
+                                    <div class="bar-track" style="background: #fef3c7;">
+                                        <div class="bar-fill" style="width: 32%; background: #f59e0b;"></div>
+                                    </div>
+                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Restock
+                                        parcel scheduled via central terminal</p>
+                                </div>
+
+                                <div style="margin-bottom: 20px;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                                        <span style="font-weight: 700;">Oral Rehydration Salts</span>
+                                        <span style="color: #f59e0b; font-weight: 800;">45 Days</span>
+                                    </div>
+                                    <div class="bar-track" style="background: #fef3c7;">
+                                        <div class="bar-fill" style="width: 40%; background: #f59e0b;"></div>
+                                    </div>
+                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Batch #992
+                                        critical date thresholds expiring soon</p>
+                                </div>
+
+                                <div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                                        <span style="font-weight: 700;">Surgical Gloves</span>
+                                        <span style="color: #e63946; font-weight: 800;">CRITICAL</span>
+                                    </div>
+                                    <div class="bar-track" style="background: #fce8e8;">
+                                        <div class="bar-fill" style="width: 4%; background: #e63946;"></div>
+                                    </div>
+                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Out of stock
+                                        at 3 regional warehouse operations units</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alignment-wrapper">
+                        <div class="align-col">
+                            <div class="tab-row">
+                                <div class="mini-tab on" onclick="tabShow('u-mgmt', this)">Personnel</div>
+                                <div class="mini-tab" onclick="tabShow('f-dir', this)">Suppliers</div>
+                                <div class="mini-tab" onclick="tabShow('a-invent', this)">Finance</div>
+                                <div class="mini-tab" onclick="tabShow('p-dir', this)">Administration</div>
+                            </div>
+
+                            <div class="tab-content-wrapper">
+                                <div id="u-mgmt" class="tab-pane active">
+                                    <div class="card"
+                                        style="border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;">
+                                        <div class="ch">
+                                            <span>User Directory</span>
+                                            <button class="btn btn-p" style="padding: 4px 12px; font-size: 10px;">+ ADD
+                                                USER</button>
+                                        </div>
+                                        <div class="cb" style="padding: 0; overflow-y: auto; max-height: 260px;">
+                                            <table
+                                                style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+                                                <thead
+                                                    style="position: sticky; top: 0; background: var(--bg-main); z-index: 10;">
+                                                    <tr style="border-bottom: 1px solid var(--c-border);">
+                                                        <th
+                                                            style="padding: 12px 24px; color: var(--text-muted); font-weight: 800;">
+                                                            NAME</th>
+                                                        <th
+                                                            style="padding: 12px 24px; color: var(--text-muted); font-weight: 800;">
+                                                            ROLE</th>
+                                                        <th
+                                                            style="padding: 12px 24px; color: var(--text-muted); font-weight: 800;">
+                                                            STATUS</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="border-bottom: 1px solid rgba(221, 190, 168, 0.2);">
+                                                        <td style="padding: 12px 24px;"><strong>A. Mchome</strong></td>
+                                                        <td style="padding: 12px 24px;">Site Lead</td>
+                                                        <td style="padding: 12px 24px;"><span
+                                                                style="color: var(--c-primary); font-weight: 700;">Active</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="border-bottom: 1px solid rgba(221, 190, 168, 0.2);">
+                                                        <td style="padding: 12px 24px;"><strong>S. Lowassa</strong></td>
+                                                        <td style="padding: 12px 24px;">Logistics</td>
+                                                        <td style="padding: 12px 24px;"><span
+                                                                style="color: var(--c-primary); font-weight: 700;">Active</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="border-bottom: 1px solid rgba(221, 190, 168, 0.2);">
+                                                        <td style="padding: 12px 24px;"><strong>J. Kikwete</strong></td>
+                                                        <td style="padding: 12px 24px;">Donors</td>
+                                                        <td style="padding: 12px 24px;"><span
+                                                                style="color: var(--text-muted);">Inactive</span></td>
+                                                    </tr>
+                                                    <tr style="border-bottom: 1px solid rgba(221, 190, 168, 0.2);">
+                                                        <td style="padding: 12px 24px;"><strong>H. Mwinyi</strong></td>
+                                                        <td style="padding: 12px 24px;">Field Officer</td>
+                                                        <td style="padding: 12px 24px;"><span
+                                                                style="color: var(--c-primary); font-weight: 700;">Active</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="border-bottom: 1px solid rgba(221, 190, 168, 0.2);">
+                                                        <td style="padding: 12px 24px;"><strong>D. Shein</strong></td>
+                                                        <td style="padding: 12px 24px;">Health Coord.</td>
+                                                        <td style="padding: 12px 24px;"><span
+                                                                style="color: var(--c-primary); font-weight: 700;">Active</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="border-bottom: 1px solid rgba(221, 190, 168, 0.2);">
+                                                        <td style="padding: 12px 24px;"><strong>P. Njoroge</strong></td>
+                                                        <td style="padding: 12px 24px;">Security</td>
+                                                        <td style="padding: 12px 24px;"><span id="table-user-status"
+                                                                style="color: #f59e0b; font-weight: 700;">Pending</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div
+                                            style="padding: 12px 24px; border-top: 1px solid var(--c-border); text-align: center; background: white; margin-top: auto;">
+                                            <span
+                                                style="font-size: 11px; font-weight: 800; color: var(--c-primary); cursor: pointer; text-transform: uppercase; letter-spacing: 1px;"
+                                                onclick="alert('Navigating into deeper Directory Database Sub-modules...')">View
+                                                Full Directory &rarr;</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="f-dir" class="tab-pane">
+                                    <div class="card"
+                                        style="border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;">
+                                        <div class="ch">Suppliers Module</div>
+                                        <div class="cb">Coming soon.</div>
+                                    </div>
+                                </div>
+                                <div id="a-invent" class="tab-pane">
+                                    <div class="card"
+                                        style="border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;">
+                                        <div class="ch">Finance Quickview</div>
+                                        <div class="cb">Coming soon!</div>
+                                    </div>
+                                </div>
+                                <div id="p-dir" class="tab-pane">
+                                    <div class="card"
+                                        style="border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;">
+                                        <div class="ch">Administration Quickview</div>
+                                        <div class="cb">Coming soon!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="align-col">
+                            <div class="card">
+                                <div class="ch">Schedule & Events</div>
+                                <div class="cb">
+                                    <div class="cal-wrapper">
+                                        <div>
+                                            <div class="cal-month">
+                                                <span>May 2026</span>
+                                                <div style="display:flex; gap:10px; color:var(--c-border)">
+                                                    <span style="cursor:pointer"
+                                                        onclick="alert('Previous Month...')">&lt;</span>
+                                                    <span style="cursor:pointer"
+                                                        onclick="alert('Next Month...')">&gt;</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="cal-grid">
+                                                <div class="cal-day-label">S</div>
+                                                <div class="cal-day-label">M</div>
+                                                <div class="cal-day-label">T</div>
+                                                <div class="cal-day-label">W</div>
+                                                <div class="cal-day-label">T</div>
+                                                <div class="cal-day-label">F</div>
+                                                <div class="cal-day-label">S</div>
+
+                                                <div class="cal-date" style="opacity:0.3">26</div>
+                                                <div class="cal-date" style="opacity:0.3">27</div>
+                                                <div class="cal-date" style="opacity:0.3">28</div>
+                                                <div class="cal-date" style="opacity:0.3">29</div>
+                                                <div class="cal-date" style="opacity:0.3">30</div>
+                                                <div class="cal-date today">1</div>
+                                                <div class="cal-date">2</div>
+
+                                                <div class="cal-date">3</div>
+                                                <div class="cal-date event">4</div>
+                                                <div class="cal-date">5</div>
+                                                <div class="cal-date">6</div>
+                                                <div class="cal-date">7</div>
+                                                <div class="cal-date event">8</div>
+                                                <div class="cal-date">9</div>
+
+                                                <div class="cal-date">10</div>
+                                                <div class="cal-date">11</div>
+                                                <div class="cal-date">12</div>
+                                                <div class="cal-date event">13</div>
+                                                <div class="cal-date">14</div>
+                                                <div class="cal-date">15</div>
+                                                <div class="cal-date">16</div>
+
+                                                <div class="cal-date">17</div>
+                                                <div class="cal-date">18</div>
+                                                <div class="cal-date">19</div>
+                                                <div class="cal-date">20</div>
+                                                <div class="cal-date">21</div>
+                                                <div class="cal-date">22</div>
+                                                <div class="cal-date">23</div>
+
+                                                <div class="cal-date">24</div>
+                                                <div class="cal-date">25</div>
+                                                <div class="cal-date">26</div>
+                                                <div class="cal-date">27</div>
+                                                <div class="cal-date">28</div>
+                                                <div class="cal-date">29</div>
+                                                <div class="cal-date">30</div>
+                                                <div class="cal-date">31</div>
+                                                <div class="cal-date" style="opacity:0.3">1</div>
+                                                <div class="cal-date" style="opacity:0.3">2</div>
+                                                <div class="cal-date" style="opacity:0.3">3</div>
+                                                <div class="cal-date" style="opacity:0.3">4</div>
+                                                <div class="cal-date" style="opacity:0.3">5</div>
+                                                <div class="cal-date" style="opacity:0.3">6</div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--c-light);">
+                                            <p
+                                                style="font-size: 11px; font-weight: 700; color: var(--c-accent); text-transform: uppercase;">
+                                                Upcoming Agenda</p>
+                                            <div
+                                                style="font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                                                <div
+                                                    style="width: 6px; height: 6px; background: var(--c-accent); border-radius: 50%;">
+                                                </div>
+                                                <span>Delivery from MediSupply - 09:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="s-pending" class="sc">
+                    <div class="card">
+                        <div class="ch">Authorization Queue</div>
+                        <div class="cb">
+                            <div id="clearanceBox"
+                                style="border:1.5px solid var(--c-primary); background:rgba(36, 106, 115, 0.05); padding:24px; border-radius:12px; transition: 0.3s;">
+                                <h4 style="margin-bottom:8px">Personnel Clearance: P. Njoroge</h4>
+                                <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px">Awaiting site
+                                    administrator permissions for Regional Site A access protocols.</p>
+                                <div style="display:flex; gap:12px">
+                                    <button class="btn btn-p" onclick="handleAction('clearanceBox', 'Authorized')">Grant
+                                        Access</button>
+                                    <button class="btn btn-ghost"
+                                        onclick="handleAction('clearanceBox', 'Declined')">Decline Request</button>
+                                </div>
+                            </div>
+                            <div id="emptyQueue"
+                                style="display:none; text-align:center; padding: 40px var(--radius-lg) var(--radius-lg); color: var(--text-muted);">
+                                <p style="font-size: 14px; font-weight: 600;">✓ Authorization queue completely clear.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function asc(id, el) {
+            document.querySelectorAll('.sc').forEach(s => s.classList.remove('on'));
+            document.querySelectorAll('.sb-item, .sb-sub-item').forEach(n => n.classList.remove('on'));
+
+            const subPanel = document.getElementById('s-' + id);
+            if (subPanel) subPanel.classList.add('on');
+
+            if (el) el.classList.add('on');
+            document.getElementById('atitle').textContent = el ? el.innerText.split('\n')[0] : 'Overview';
+
+            toggleSidebar(false);
+        }
+
+        function tabShow(id, el) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.mini-tab').forEach(t => t.classList.remove('on'));
+
+            const coreTab = document.getElementById(id);
+            if (coreTab) coreTab.classList.add('active');
+
+            if (el) {
+                el.classList.add('on');
+            } else {
+                const associatedMiniTab = document.querySelector(`[onclick*='tabShow(\"${id}\"']`);
+                if (associatedMiniTab) associatedMiniTab.classList.add('on');
+            }
+        }
+
+        // Inline Sidebar Submenu Toggle Actions
+        function toggleSubmenu(parentItem) {
+            const container = parentItem.parentElement;
+            const isOpen = container.classList.contains('open');
+
+            document.querySelectorAll('.sb-has-dropdown').forEach(item => {
+                item.classList.remove('open');
+            });
+
+            if (!isOpen) {
+                container.classList.add('open');
+            }
+        }
+
+        // Notification Dropdown trigger controls
+        function toggleNotifMenu(event) {
+            event.stopPropagation();
+            const profCard = document.getElementById('profileDropdownCard');
+            if (profCard) profCard.classList.remove('active');
+
+            const card = document.getElementById('dropdownCard');
+            if (card) card.classList.toggle('active');
+        }
+
+        // Profile Dropdown trigger controls
+        function toggleProfileMenu(event) {
+            event.stopPropagation();
+            const notifCard = document.getElementById('dropdownCard');
+            if (notifCard) notifCard.classList.remove('active');
+
+            const card = document.getElementById('profileDropdownCard');
+            if (card) card.classList.toggle('active');
+        }
+
+        window.addEventListener('click', function () {
+            const notifCard = document.getElementById('dropdownCard');
+            if (notifCard && notifCard.classList.contains('active')) notifCard.classList.remove('active');
+
+            const profCard = document.getElementById('profileDropdownCard');
+            if (profCard && profCard.classList.contains('active')) profCard.classList.remove('active');
+        });
+
+        function openAuthorizationsQueue() {
+            asc('pending', null);
+            const card = document.getElementById('dropdownCard');
+            if (card) card.classList.remove('active');
+
+            const clearanceSubItem = document.querySelector('[onclick*="asc(\'pending\'"]');
+            if (clearanceSubItem) clearanceSubItem.classList.add('on');
+        }
+
+        function handleAction(elementId, outcome) {
+            const targetElement = document.getElementById(elementId);
+            if (targetElement) {
+                targetElement.style.opacity = '0';
+                targetElement.style.transform = 'translateY(10px)';
+
+                setTimeout(() => {
+                    targetElement.style.display = 'none';
+                    document.getElementById('emptyQueue').style.display = 'block';
+
+                    const dot = document.getElementById('queue-dot');
+                    if (dot) dot.style.display = 'none';
+
+                    if (document.getElementById('dd-preview')) document.getElementById('dd-preview').style.display = 'none';
+                    if (document.getElementById('dd-empty')) document.getElementById('dd-empty').style.display = 'block';
+
+                    if (document.getElementById('stat-urgent-count')) document.getElementById('stat-urgent-count').innerText = '0';
+
+                    const cellStatus = document.getElementById('table-user-status');
+                    if (cellStatus) {
+                        cellStatus.innerText = outcome === 'Authorized' ? 'Active' : 'Declined';
+                        cellStatus.style.color = outcome === 'Authorized' ? 'var(--c-primary)' : 'var(--text-muted)';
+                    }
+
+                    alert(`System Record: Personnel request successfully ${outcome}.`);
+                }, 300);
+            }
+        }
+
+        function toggleSidebar(shouldOpen) {
+            const sidebar = document.getElementById('adminSidebar');
+            const overlay = document.getElementById('sbOverlay');
+
+            if (shouldOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('visible');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+        }
+    </script>
+</body>
+
+</html>
