@@ -10,19 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --c-dark: #392a28;
-            --c-primary: #246a73;
-            --c-accent: #368f8b;
-            --c-light: #f3dfc1;
-            --c-border: #ddbea8;
+            --c-dark: #246a73;          /* Blue theme base */
+            --c-primary: #1b5158;       /* Darker blue accent */
+            --c-accent: #f59e0b;        /* Orange brand highlight */
+            --c-light: #fef3c7;         /* Light orange tint */
+            --c-border: #cbd5e1;
             --bg-main: #faf9f6;
-            --text-main: #392a28;
-            --text-muted: #6b5b59;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --radius-lg: 12px;
             --radius-md: 8px;
-            --status-pending: #f59e0b;
-            --status-approved: #246a73;
-            --status-delivered: #368f8b;
+            --status-pending: #f59e0b;  /* Orange status indicator */
+            --status-approved: #246a73; /* Blue status indicator */
+            --status-delivered: #10b981;
         }
 
         * {
@@ -53,7 +53,6 @@
                 opacity: 0;
                 transform: translateY(4px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -74,7 +73,7 @@
             height: 100%;
             overflow-y: auto;
             background: var(--c-dark);
-            color: var(--c-light);
+            color: white;
             display: flex;
             flex-direction: column;
             padding: 20px;
@@ -88,7 +87,7 @@
             font-weight: 700;
             font-size: 14px;
             margin-bottom: 24px;
-            border-bottom: 1px solid rgba(243, 223, 193, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             letter-spacing: 1.5px;
             display: flex;
             align-items: center;
@@ -108,7 +107,7 @@
             padding: 12px 14px;
             border-radius: var(--radius-md);
             font-size: 13px;
-            color: rgba(243, 223, 193, 0.6);
+            color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
             margin-bottom: 4px;
             display: flex;
@@ -124,73 +123,26 @@
         }
 
         .sb-item.on {
-            background: var(--c-primary);
+            background: var(--c-accent); /* Active navigation item highlighted with Orange */
             color: white;
-        }
-
-        .sb-has-dropdown {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sb-chevron {
-            transition: transform 0.2s ease;
-            opacity: 0.45;
-            flex-shrink: 0;
-        }
-
-        .sb-has-dropdown.open .sb-chevron {
-            transform: rotate(180deg);
-            opacity: 0.9;
-        }
-
-        .sb-sub-group {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.25s ease-out;
-            display: flex;
-            flex-direction: column;
-            padding-left: 12px;
-        }
-
-        .sb-has-dropdown.open .sb-sub-group {
-            max-height: 240px;
-        }
-
-        .sb-sub-item {
-            padding: 10px 14px 10px 26px;
-            font-size: 12px;
-            color: rgba(243, 223, 193, 0.45);
-            cursor: pointer;
-            border-radius: var(--radius-md);
-            margin-bottom: 2px;
-            transition: 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .sb-sub-item:hover {
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(243, 223, 193, 0.85);
         }
 
         .sb-sec {
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: rgba(243, 223, 193, 0.3);
+            color: rgba(255, 255, 255, 0.3);
             padding: 24px 14px 8px;
         }
 
         .sb-foot {
             margin-top: auto;
             padding: 16px 14px;
-            border-top: 1px solid rgba(243, 223, 193, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sb-logout-btn {
-            color: rgba(243, 223, 193, 0.4);
+            color: rgba(255, 255, 255, 0.4);
             font-size: 12px;
             cursor: pointer;
             display: flex;
@@ -251,26 +203,27 @@
         }
 
         .btn-p {
-            background: var(--c-primary);
+            background: var(--c-dark);
             color: white;
         }
 
         .btn-p:hover {
-            background: var(--c-accent);
+            background: var(--c-primary);
         }
 
         .btn-ghost {
             background: transparent;
             border: 1px solid var(--c-border);
-            color: var(--c-dark);
+            color: var(--text-main);
         }
 
         .card {
             background: white;
             border-radius: var(--radius-lg);
             border: 1px solid var(--c-border);
-            box-shadow: 0 4px 12px rgba(57, 42, 40, 0.03);
+            box-shadow: 0 4px 12px rgba(7, 16, 19, 0.03);
             margin-bottom: 24px;
+            overflow: hidden;
         }
 
         .ch {
@@ -281,7 +234,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--c-dark);
+            color: var(--text-main);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -302,7 +255,7 @@
             padding: 20px;
             border-radius: var(--radius-lg);
             border: 1px solid var(--c-border);
-            border-bottom: 3px solid var(--c-accent);
+            border-bottom: 3px solid var(--c-dark);
         }
 
         .stat-box p:first-child {
@@ -315,7 +268,7 @@
         .stat-box p:last-child {
             font-size: 28px;
             font-weight: 800;
-            color: var(--c-dark);
+            color: var(--text-main);
             margin-top: 4px;
         }
 
@@ -328,7 +281,7 @@
         .bar-track {
             flex: 1;
             height: 8px;
-            background: var(--c-light);
+            background: #f1f5f9;
             border-radius: 10px;
             margin: 0 12px;
             overflow: hidden;
@@ -339,7 +292,7 @@
             background: var(--c-accent);
         }
 
-        /* VISUAL PROGRESS GRAPH BARS */
+        /* GRAPH BARS */
         .chart-container {
             display: flex;
             align-items: flex-end;
@@ -380,7 +333,7 @@
             transform: translateX(-50%);
             font-size: 10px;
             font-weight: 700;
-            color: var(--c-dark);
+            color: var(--text-main);
         }
 
         .chart-axis-label {
@@ -422,14 +375,14 @@
         }
 
         .cal-day-cell.active-today {
-            border-color: var(--c-primary);
-            background: rgba(36, 106, 115, 0.05);
+            border-color: var(--c-accent);
+            background: rgba(245, 158, 11, 0.05);
         }
 
         .cal-day-num {
             font-size: 12px;
             font-weight: 800;
-            color: var(--c-dark);
+            color: var(--text-main);
             margin-bottom: 6px;
             display: block;
         }
@@ -482,11 +435,11 @@
 
         .badge-approved {
             background: rgba(36, 106, 115, 0.1);
-            color: var(--c-primary);
+            color: var(--status-approved);
         }
 
         .badge-delivered {
-            background: rgba(54, 143, 139, 0.1);
+            background: rgba(16, 185, 129, 0.1);
             color: var(--status-delivered);
         }
 
@@ -512,13 +465,13 @@
             border-radius: var(--radius-md);
             font-family: inherit;
             font-size: 13px;
-            color: var(--c-dark);
-            background: var(--bg-main);
+            color: var(--text-main);
+            background: white;
         }
 
         .form-control:focus {
             outline: none;
-            border-color: var(--c-primary);
+            border-color: var(--c-accent);
         }
 
         .sidebar-overlay {
@@ -528,7 +481,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(57, 42, 40, 0.4);
+            background: rgba(7, 16, 19, 0.4);
             z-index: 90;
         }
 
@@ -538,12 +491,12 @@
             position: absolute;
             top: 56px;
             width: 320px;
-            background: rgba(36, 106, 115, 0.08);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--c-primary);
+            border: 1px solid var(--c-border);
             border-radius: var(--radius-lg);
-            box-shadow: 0 12px 32px rgba(36, 106, 115, 0.12);
+            box-shadow: 0 12px 32px rgba(7, 16, 19, 0.1);
             display: none;
             flex-direction: column;
             z-index: 200;
@@ -564,7 +517,6 @@
                 opacity: 0;
                 transform: translateY(-6px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -578,12 +530,12 @@
 
         .dd-title-header {
             padding: 14px 18px;
-            border-bottom: 1px solid rgba(36, 106, 115, 0.15);
+            border-bottom: 1px solid var(--c-border);
             font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--c-primary);
+            color: var(--c-dark);
         }
 
         .dd-scroll-frame {
@@ -593,11 +545,11 @@
         }
 
         .dd-preview-card {
-            background: rgba(255, 255, 255, 0.75);
-            border-left: 3px solid var(--status-pending);
+            background: white;
+            border-left: 3px solid var(--c-accent);
             padding: 12px;
             border-radius: var(--radius-md);
-            box-shadow: 0 2px 8px rgba(36, 106, 115, 0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .dd-empty-notice {
@@ -610,7 +562,7 @@
 
         .dd-action-footer {
             padding: 12px;
-            border-top: 1px solid rgba(36, 106, 115, 0.15);
+            border-top: 1px solid var(--c-border);
             text-align: center;
             background: rgba(255, 255, 255, 0.4);
             border-radius: 0 0 var(--radius-lg) var(--radius-lg);
@@ -619,7 +571,7 @@
         .dd-view-all-btn {
             font-size: 11px;
             font-weight: 700;
-            color: var(--c-primary);
+            color: var(--c-dark);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             cursor: pointer;
@@ -640,7 +592,7 @@
             padding: 10px 14px;
             font-size: 12px;
             font-weight: 600;
-            color: var(--c-dark);
+            color: var(--text-main);
             cursor: pointer;
             border-radius: var(--radius-md);
             transition: 0.15s;
@@ -650,8 +602,8 @@
         }
 
         .profile-menu-item:hover {
-            background: rgba(255, 255, 255, 0.75);
-            color: var(--c-primary);
+            background: var(--c-light);
+            color: var(--c-dark);
         }
 
         @media (max-width: 992px) {
@@ -733,11 +685,11 @@
 
         .notif-wrapper:hover {
             background: var(--c-light);
-            color: var(--c-primary);
+            color: var(--c-dark);
         }
 
         .notif-bell {
-            color: var(--c-dark);
+            color: var(--text-main);
         }
 
         .notif-dot {
@@ -746,7 +698,7 @@
             right: 4px;
             width: 9px;
             height: 9px;
-            background: #e63946;
+            background: var(--c-accent);
             border: 2px solid white;
             border-radius: 50%;
             display: block;
@@ -777,7 +729,7 @@
         <aside id="adminSidebar" class="sidebar">
             <div class="sb-logo">
                 <img src="assets/Child-Help-Logo.png" alt="Logo" class="sb-logo-img">
-                <span>CHITA</span>
+                <span style="color: var(--c-accent)">CHITA</span>
             </div>
 
             <div class="sb-sec">Dashboard</div>
@@ -796,36 +748,35 @@
 
             <div class="sb-sec">Inventory</div>
 
-            <div class="sb-item on" onclick="alert('cones', this)">
+            <div class="sb-item" onclick="alert('Opening Cones Catalog...')">
                 <span>Cones</span>
             </div>
 
-            <div class="sb-item" onclick="alert('catheters', this)">
+            <div class="sb-item" onclick="alert('Opening Catheters Catalog...')">
                 <span>Catheters</span>
             </div>
 
-            <div class="sb-item" onclick="alert('enema-bags', this)">
+            <div class="sb-item" onclick="alert('Opening Enema Bags Catalog...')">
                 <span>Enema Bags</span>
             </div>
 
-            <div class="sb-item" onclick="alert('oxybutinin-caps', this)">
+            <div class="sb-item" onclick="alert('Opening Oxybutinin Capsules Catalog...')">
                 <span>Oxybutinin Capsules</span>
             </div>
 
             <div class="sb-sec">Other</div>
 
-            <div class="sb-item on" onclick="window.location.href='forms.html#all'">
+            <div class="sb-item" onclick="window.location.href='forms.html#all'">
                 <span>Forms</span>
             </div>
 
-            <div class="sb-item" onclick="alert('catheters', this)">
+            <div class="sb-item" onclick="alert('Accessing Patient Registry...')">
                 <span>Patient Registry</span>
             </div>
 
-            <div class="sb-item" onclick="alert('enema-bags', this)">
+            <div class="sb-item" onclick="alert('Accessing Donor Registry...')">
                 <span>Donor Registry</span>
             </div>
-
 
             <div class="sb-foot">
                 <a href="#" class="sb-logout-btn"
@@ -854,7 +805,7 @@
                     </button>
                 </div>
 
-                <h2 id="atitle" style="font-size:18px; font-weight:800; letter-spacing:-0.5px">Home</h2>
+                <h2 id="atitle" style="font-size:18px; font-weight:800; letter-spacing:-0.5px; color: var(--c-dark)">Home</h2>
 
                 <div class="header-actions">
 
@@ -874,10 +825,9 @@
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                                     <span
                                         style="background: var(--status-pending); color: white; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">Pending</span>
-                                    <p style="font-weight: 700; color: var(--c-dark); font-size: 12px;">Needs Admin Approved</p>
+                                    <p style="font-weight: 700; color: var(--text-main); font-size: 12px;">Needs Admin Approval</p>
                                 </div>
-                                <p
-                                    style="color: var(--text-muted); font-size: 11px; line-height: 1.4; padding-left: 2px;">
+                                <p style="color: var(--text-muted); font-size: 11px; line-height: 1.4; padding-left: 2px;">
                                     Order #ORD-9942 is waiting for the main office to sign off.</p>
                             </div>
                             <div id="dd-empty" class="dd-empty-notice">
@@ -894,7 +844,7 @@
                             <p style="font-size:12px; font-weight:800">Dr. Alex Mwangi</p>
                             <p style="font-size:10px; color:var(--text-muted)">Mbuyuni Hospital</p>
                         </div>
-                        <div style="width:36px; height:36px; background:var(--c-border); border-radius:50%"></div>
+                        <div style="width:36px; height:36px; background:var(--c-dark); border-radius:50%"></div>
                     </div>
 
                     <div id="profileDropdownCard" class="profile-dropdown">
@@ -942,15 +892,15 @@
                             <p>ORDERS PLACED THIS WEEK</p>
                             <p id="stat-total">3</p>
                         </div>
-                        <div class="stat-box">
+                        <div class="stat-box" style="border-bottom-color: var(--c-accent)">
                             <p>WAITING FOR APPROVAL</p>
                             <p id="stat-pending" style="color:var(--status-pending)">1</p>
                         </div>
                         <div class="stat-box">
                             <p>PENDING</p>
-                            <p id="stat-approved" style="color:var(--c-primary)">1</p>
+                            <p id="stat-approved" style="color:var(--status-approved)">1</p>
                         </div>
-                        <div class="stat-box">
+                        <div class="stat-box" style="border-bottom-color: var(--status-delivered)">
                             <p>DELIVERED</p>
                             <p id="stat-delivered" style="color:var(--status-delivered)">1</p>
                         </div>
@@ -958,11 +908,11 @@
 
                     <div class="dashboard-split-grid">
                         <div class="card">
-                            <div class="ch">Supply Metrics Dashboard</div>
+                            <div class="ch" style="color: var(--c-dark)">Supply Metrics Dashboard</div>
                             <div class="cb">
                                 <div class="chart-container">
                                     <div class="chart-column-wrapper">
-                                        <div class="chart-bar-fill" data-value="120" style="height: 60%; background: var(--c-primary);"></div>
+                                        <div class="chart-bar-fill" data-value="120" style="height: 60%; background: var(--c-dark);"></div>
                                         <div class="chart-axis-label">Cones</div>
                                     </div>
                                     <div class="chart-column-wrapper">
@@ -970,11 +920,11 @@
                                         <div class="chart-axis-label">Cath.</div>
                                     </div>
                                     <div class="chart-column-wrapper">
-                                        <div class="chart-bar-fill" data-value="210" style="height: 95%; background: var(--status-pending);"></div>
+                                        <div class="chart-bar-fill" data-value="210" style="height: 95%; background: var(--text-muted);"></div>
                                         <div class="chart-axis-label">Enema</div>
                                     </div>
                                     <div class="chart-column-wrapper">
-                                        <div class="chart-bar-fill" data-value="85" style="height: 45%; background: var(--c-dark);"></div>
+                                        <div class="chart-bar-fill" data-value="85" style="height: 45%; background: var(--c-primary);"></div>
                                         <div class="chart-axis-label">Oxy.</div>
                                     </div>
                                 </div>
@@ -982,7 +932,7 @@
                         </div>
 
                         <div class="card">
-                            <div class="ch">Ward Schedule (3-Day Outlook)</div>
+                            <div class="ch" style="color: var(--c-dark)">Ward Schedule (3-Day Outlook)</div>
                             <div class="cb" style="padding: 16px;">
                                 <div class="mini-calendar-grid">
                                     <div class="cal-day-head">Yesterday</div>
@@ -995,7 +945,7 @@
                                     </div>
                                     <div class="cal-day-cell active-today">
                                         <span class="cal-day-num">May 25</span>
-                                        <span class="cal-day-desc" style="color: var(--c-primary); font-weight: 700;">Ward Audit Inspection due by evening.</span>
+                                        <span class="cal-day-desc" style="color: var(--c-dark); font-weight: 700;">Ward Audit Inspection due by evening.</span>
                                     </div>
                                     <div class="cal-day-cell">
                                         <span class="cal-day-num">May 26</span>
@@ -1008,40 +958,27 @@
 
                     <div class="dashboard-split-grid">
                         <div class="card">
-                            <div class="ch">Recent Activity</div>
+                            <div class="ch" style="color: var(--c-dark)">Recent Activity</div>
                             <div class="cb">
-                                <div
-                                    style="padding:16px 0; border-bottom:1px solid var(--c-border); display:flex; gap:12px; align-items: flex-start;">
-                                    <div
-                                        style="width:8px; height:8px; border-radius:50%; background:var(--status-delivered); margin-top:5px; flex-shrink:0;">
-                                    </div>
+                                <div style="padding:16px 0; border-bottom:1px solid var(--c-border); display:flex; gap:12px; align-items: flex-start;">
+                                    <div style="width:8px; height:8px; border-radius:50%; background:var(--status-delivered); margin-top:5px; flex-shrink:0;"></div>
                                     <div style="flex: 1;">
-                                        <div
-                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                            <p style="font-size:13px;"><strong>Items Received</strong> • <span
-                                                    style="color:var(--c-accent)">ORD-8821</span></p>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                            <p style="font-size:13px;"><strong>Items Received</strong> • <span style="color:var(--c-accent)">ORD-8821</span></p>
                                             <span class="badge badge-delivered">Delivered</span>
                                         </div>
-                                        <p style="font-size:12px; color:var(--text-muted)">10 packs of Sterile Surgical
-                                            Gloves dropped off and put in the stock closet.</p>
-                                        <p style="font-size:11px; color:var(--text-muted); margin-top:4px">2 hours ago
-                                        </p>
+                                        <p style="font-size:12px; color:var(--text-muted)">10 packs of Sterile Surgical Gloves dropped off and put in the stock closet.</p>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:4px">2 hours ago</p>
                                     </div>
                                 </div>
-                                <div
-                                    style="padding:16px 0; border-bottom:1px solid var(--c-border); display:flex; gap:12px; align-items: flex-start;">
-                                    <div
-                                        style="width:8px; height:8px; border-radius:50%; background:var(--c-primary); margin-top:5px; flex-shrink:0;">
-                                    </div>
+                                <div style="padding:16px 0; border-bottom:1px solid var(--c-border); display:flex; gap:12px; align-items: flex-start;">
+                                    <div style="width:8px; height:8px; border-radius:50%; background:var(--status-approved); margin-top:5px; flex-shrink:0;"></div>
                                     <div style="flex: 1;">
-                                        <div
-                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                            <p style="font-size:13px;"><strong>Shipped out by Supplier</strong> • <span
-                                                    style="color:var(--c-accent)">ORD-9104</span></p>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                            <p style="font-size:13px;"><strong>Shipped out by Supplier</strong> • <span style="color:var(--c-accent)">ORD-9104</span></p>
                                             <span class="badge badge-approved">On the Way</span>
                                         </div>
-                                        <p style="font-size:12px; color:var(--text-muted)">50 boxes of Oxytocin approved
-                                            by Admin and handed over to the delivery vehicle.</p>
+                                        <p style="font-size:12px; color:var(--text-muted)">50 boxes of Oxytocin approved by Admin and handed over to the delivery vehicle.</p>
                                         <p style="font-size:11px; color:var(--text-muted); margin-top:4px">Yesterday</p>
                                     </div>
                                 </div>
@@ -1049,40 +986,32 @@
                         </div>
 
                         <div class="card">
-                            <div class="ch">Low Stock Alerts</div>
+                            <div class="ch" style="color: var(--c-dark)">Low Stock Alerts</div>
                             <div class="cb">
                                 <div style="margin-bottom: 20px;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
-                                        <span style="font-weight: 700;">Catheters</span> <span
-                                            style="color: #e63946; font-weight: 800;">15% Left</span>
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                                        <span style="font-weight: 700;">Catheters</span> <span style="color: var(--c-accent); font-weight: 800;">15% Left</span>
                                     </div>
-                                    <div class="bar-track" style="background: #fce8e8;">
-                                        <div class="bar-fill" style="width: 15%; background: #e63946;"></div>
+                                    <div class="bar-track" style="background: #f1f5f9;">
+                                        <div class="bar-fill" style="width: 15%;"></div>
                                     </div>
-                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Critical
-                                        level: Place a request soon</p>
+                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Critical level: Place a request soon</p>
                                 </div>
                                 <div style="margin-bottom: 20px;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
-                                        <span style="font-weight: 700;">Enema Bags</span> <span
-                                            style="color: var(--status-pending); font-weight: 800;">45% Left</span>
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                                        <span style="font-weight: 700;">Enema Bags</span> <span style="color: var(--status-pending); font-weight: 800;">45% Left</span>
                                     </div>
-                                    <div class="bar-track" style="background: #fffbeb;">
-                                        <div class="bar-fill" style="width: 45%; background: var(--status-pending);"></div>
+                                    <div class="bar-track" style="background: #f1f5f9;">
+                                        <div class="bar-fill" style="width: 45%;"></div>
                                     </div>
-                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Running low
-                                        due to high patient volume today</p>
+                                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Running low due to high patient volume today</p>
                                 </div>
                                 <div style="margin-bottom: 10px;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
-                                        <span style="font-weight: 700;">Cones</span> <span
-                                            style="color: var(--c-primary); font-weight: 800;">55% Left</span>
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                                        <span style="font-weight: 700;">Cones</span> <span style="color: var(--status-approved); font-weight: 800;">55% Left</span>
                                     </div>
-                                    <div class="bar-track" style="background: #e2f0f1;">
-                                        <div class="bar-fill" style="width: 55%; background: var(--c-primary);"></div>
+                                    <div class="bar-track" style="background: #f1f5f9;">
+                                        <div class="bar-fill" style="width: 55%; background: var(--status-approved);"></div>
                                     </div>
                                     <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Low Volume</p>
                                 </div>
@@ -1093,35 +1022,29 @@
 
                 <div id="s-order-placement" class="sc">
                     <div class="card" style="max-width: 650px; margin: 0 auto;">
-                        <div class="ch">Request Supplies</div>
+                        <div class="ch" style="color: var(--c-dark)">Request Supplies</div>
                         <div class="cb">
                             <form id="supplyOrderForm" onsubmit="handleOrderSubmission(event)">
                                 <div class="form-group">
                                     <label for="supplyItem">What item do you need?</label>
                                     <select id="supplyItem" class="form-control" required>
                                         <option value="">-- Choose an item --</option>
-                                        <option value="Sterile Syringes (10ml)">Sterile Syringes (10ml) - Pack of 100
-                                        </option>
+                                        <option value="Sterile Syringes (10ml)">Sterile Syringes (10ml) - Pack of 100</option>
                                         <option value="Surgical Face Masks">Surgical Face Masks - Box of 50</option>
                                         <option value="Antiseptic Hand Rub">Antiseptic Hand Rub - 500ml Bottle</option>
-                                        <option value="Giving Sets (Standard)">Giving Sets (Standard Fluid Drop)
-                                        </option>
+                                        <option value="Giving Sets (Standard)">Giving Sets (Standard Fluid Drop)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="orderQty">How many packs/boxes?</label>
-                                    <input type="number" id="orderQty" class="form-control" min="1" max="500"
-                                        placeholder="Enter quantity" required />
+                                    <input type="number" id="orderQty" class="form-control" min="1" max="500" placeholder="Enter quantity" required />
                                 </div>
                                 <div class="form-group">
                                     <label for="clinicalReason">Notes / Reason for request</label>
-                                    <textarea id="clinicalReason" class="form-control" rows="3"
-                                        placeholder="Add any details or mention if this is urgent..."
-                                        required></textarea>
+                                    <textarea id="clinicalReason" class="form-control" rows="3" placeholder="Add any details or mention if this is urgent..." required></textarea>
                                 </div>
                                 <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
-                                    <button type="button" class="btn btn-ghost"
-                                        onclick="asc('home', document.querySelector('[onclick*=\'home\']'))">Cancel</button>
+                                    <button type="button" class="btn btn-ghost" onclick="asc('home', document.querySelector('[onclick*=\'home\']'))">Cancel</button>
                                     <button type="submit" class="btn btn-p">Send Order</button>
                                 </div>
                             </form>
@@ -1131,7 +1054,7 @@
 
                 <div id="s-order-tracking" class="sc">
                     <div class="card">
-                        <div class="ch">Order History Log</div>
+                        <div class="ch" style="color: var(--c-dark)">Order History Log</div>
                         <div class="cb" style="padding: 0;">
                             <table class="supply-table">
                                 <thead>
@@ -1150,11 +1073,8 @@
                                         <td>Sterile Syringes (10ml) - Pack of 100</td>
                                         <td>5</td>
                                         <td>Dr. A. Mwangi</td>
-                                        <td><span id="table-status-badge" class="badge badge-pending">Waiting for
-                                                approval</span></td>
-                                        <td><span id="table-fulfillment-text"
-                                                style="color: var(--text-muted); font-style: italic;">Sitting in Admin
-                                                queue</span></td>
+                                        <td><span id="table-status-badge" class="badge badge-pending">Waiting for approval</span></td>
+                                        <td><span id="table-fulfillment-text" style="color: var(--text-muted); font-style: italic;">Sitting in Admin queue</span></td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight: 700;">ORD-9104</td>
@@ -1162,8 +1082,7 @@
                                         <td>50</td>
                                         <td>Dr. A. Mwangi</td>
                                         <td><span class="badge badge-approved">Approved</span></td>
-                                        <td style="color: var(--c-primary); font-weight: 600;">On the way (Delivery
-                                            Vehicle)</td>
+                                        <td style="color: var(--status-approved); font-weight: 600;">On the way (Delivery Vehicle)</td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight: 700;">ORD-8821</td>
@@ -1171,8 +1090,7 @@
                                         <td>10</td>
                                         <td>Nurse J. Toili</td>
                                         <td><span class="badge badge-delivered">Delivered</span></td>
-                                        <td style="color: var(--status-delivered); font-weight: 600;">Arrived & Put Away
-                                        </td>
+                                        <td style="color: var(--status-delivered); font-weight: 600;">Arrived & Put Away</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1185,10 +1103,6 @@
     </div>
 
     <script>
-        function toggleSubmenu(el) {
-            el.parentElement.classList.toggle('open');
-        }
-
         function toggleSidebar(shouldOpen) {
             const sidebar = document.getElementById('adminSidebar');
             const overlay = document.getElementById('sbOverlay');
@@ -1220,7 +1134,7 @@
         });
 
         function asc(sectionId, el) {
-            document.querySelectorAll('.sb-item, .sb-sub-item').forEach(i => i.classList.remove('on'));
+            document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('on'));
             if (el) el.classList.add('on');
 
             document.querySelectorAll('.sc').forEach(s => s.classList.remove('on'));
@@ -1270,7 +1184,7 @@
                 document.getElementById('table-status-badge').innerText = "Approved";
 
                 document.getElementById('table-fulfillment-text').innerText = "On the way";
-                document.getElementById('table-fulfillment-text').style.color = "var(--c-primary)";
+                document.getElementById('table-fulfillment-text').style.color = "var(--status-approved)";
                 document.getElementById('table-fulfillment-text').style.fontStyle = "normal";
 
                 document.getElementById('stat-pending').innerText = '0';

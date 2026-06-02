@@ -9,13 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --c-dark: #392a28;
-      --c-primary: #246a73;
-      --c-accent: #368f8b;
-      --c-light: #f3dfc1;
-      --c-border: #ddbea8;
-      --bg-main: #faf9f6;
-      --text-muted: #6b5b59;
+      --c-dark: #071013;       
+      --c-primary: #456990;    /* Steel Blue (75% Framework) */
+      --c-accent: #fa8c3f;     /* Safety Orange (Brand Accent) */
+      --c-light: #eaf6ff;      
+      --c-border: #dfe0e2;     
+      --bg-main: var(--c-light);
+      --text-muted: #5c6466;   
       --radius-md: 8px;
     }
 
@@ -32,7 +32,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* DESKTOP SIDE-BY-SIDE SPLIT */
     .login-split {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
@@ -41,12 +40,19 @@
     }
 
     .login-visual {
-      background: var(--c-primary);
+      background: var(--c-primary); 
       padding: 80px;
-      color: var(--c-light);
+      color: white;
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+
+    .login-visual h2 {
+      color: var(--c-accent);
+      font-size: 36px;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
     }
 
     .login-form-area {
@@ -62,7 +68,6 @@
       max-width: 360px;
     }
 
-    /* FORM ELEMENTS */
     .input-group {
       position: relative;
       width: 100%;
@@ -77,17 +82,19 @@
       outline: none;
       transition: 0.2s;
       font-family: inherit;
+      color: var(--c-dark);
     }
 
     input:focus, select:focus {
-      border-color: var(--c-primary);
+      border-color: var(--c-accent); 
+      box-shadow: 0 0 0 3px rgba(250, 140, 63, 0.15);
     }
 
     select {
       background: white;
       color: var(--text-muted);
       appearance: none;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b5b59' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235c6466' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>");
       background-repeat: no-repeat;
       background-position: right 14px center;
     }
@@ -99,8 +106,8 @@
       top: 50%;
       transform: translateY(-50%);
       font-size: 11px;
-      font-weight: 700;
-      color: var(--c-primary);
+      font-weight: 800;
+      color: var(--c-accent); 
       letter-spacing: 0.5px;
     }
 
@@ -123,7 +130,8 @@
     }
 
     .btn-p:hover {
-      background: #368f8b;
+      background: var(--c-accent); 
+      box-shadow: 0 4px 12px rgba(250, 140, 63, 0.2);
     }
 
     @keyframes fadeIn {
@@ -131,7 +139,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* HORIZONTAL RESPONSIVE COUPLING (TABLETS & MOBILE) */
     @media (max-width: 768px) {
       .login-split {
         grid-template-columns: 1fr;
@@ -170,14 +177,16 @@
 
   <div class="login-split">
     <div class="login-visual">
-      <h2 style="font-size:36px; margin-bottom:20px; letter-spacing:-1px">Join the CHITA Network</h2>
-      <p style="font-size:18px; opacity:0.8; line-height:1.6">Request administrative access to the procurement and supply chain portal.</p>
+      <h2>Join the CHITA Network</h2>
+      <p style="font-size:18px; opacity:0.8; line-height:1.6"><i>Request administrative access to the procurement and supply chain portal.</i></p>
     </div>
 
     <div class="login-form-area">
       <div class="login-box" style="display: flex; flex-direction: column; align-items: flex-start;">
         <img src="assets/Child-Help-Logo.png" alt="Logo" style="height: 54px; margin-bottom: 32px; width: auto;">
-        <h3 style="font-size:24px; margin-bottom:24px; color:var(--c-dark)">Create Account</h3>
+        
+        <div style="width: 24px; height: 4px; background: var(--c-accent); margin-bottom: 8px; border-radius: 2px;"></div>
+        <h3 style="font-size:24px; margin-bottom:24px; color:var(--c-dark); font-weight:800;">Create Account</h3>
 
         <form id="registrationForm" action="#" onsubmit="handleRegistration(event)" style="width: 100%;">
           
@@ -212,14 +221,13 @@
 
         <div style="width: 100%; text-align: center; font-size: 13px; color: var(--text-muted);">
           Already have an account?
-          <a href="login.html" style="color: var(--c-primary); font-weight: 700; text-decoration: none;">Sign In</a>
+          <a href="login.html" style="color: var(--c-accent); font-weight: 700; text-decoration: none;">Sign In</a>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Intercept page mount to parse incoming token references natively
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token') || urlParams.get('code');
@@ -227,8 +235,8 @@
       if (token) {
         const codeInput = document.getElementById('inviteCode');
         codeInput.value = token;
-        codeInput.style.borderColor = "var(--c-primary)";
-        codeInput.style.background = "#f0f7f7"; 
+        codeInput.style.borderColor = "var(--c-accent)";
+        codeInput.style.background = "rgba(250, 140, 63, 0.05)"; 
         codeInput.readOnly = true; 
         
         document.getElementById('tokenBadge').style.display = "block"; 

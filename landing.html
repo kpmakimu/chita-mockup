@@ -9,13 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --c-dark: #392a28;
-      --c-primary: #246a73;
-      --c-accent: #368f8b;
-      --c-light: #f3dfc1;
-      --c-border: #ddbea8;
-      --bg-main: #faf9f6;
-      --text-muted: #6b5b59;
+      /* SWAPPED HIERARCHY: ORANGE IS PRIMARY */
+      --c-dark: #071013;       
+      --c-primary: #fa8c3f;    /* Safety Orange (Brand Main Color) */
+      --c-accent: #456990;     /* Steel Blue (Supporting Theme) */
+      --c-light: #eaf6ff;      
+      --c-border: #dfe0e2;     
+      --bg-main: var(--c-light);
+      --text-muted: #5c6466;   
       --radius-md: 8px;
     }
 
@@ -88,7 +89,7 @@
     }
 
     .hero h1 span {
-      color: var(--c-primary);
+      color: var(--c-primary); /* Bold Orange Header text */
     }
 
     .hero p {
@@ -111,18 +112,24 @@
     }
 
     .btn-p {
-      background: var(--c-primary);
+      background: var(--c-primary); /* Orange Action Button */
       color: white;
     }
 
     .btn-p:hover {
-      background: var(--c-accent);
+      background: #e0762c; /* Rich deeper orange tone for interaction */
+      box-shadow: 0 4px 12px rgba(250, 140, 63, 0.3);
     }
 
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--c-border);
-      color: var(--c-dark);
+      color: var(--c-accent); /* Steel blue subtle action link */
+    }
+    
+    .btn-ghost:hover {
+      background: white;
+      border-color: var(--c-accent);
     }
 
     @keyframes fadeIn {
@@ -144,7 +151,7 @@
   </nav>
 
   <div class="hero">
-    <div style="text-transform:uppercase; font-size:11px; letter-spacing:3px; font-weight:800; color:var(--c-accent); margin-bottom:16px">
+    <div style="text-transform:uppercase; font-size:11px; letter-spacing:3px; font-weight:800; color:var(--c-primary); margin-bottom:16px">
       Supply Chain Management
     </div>
     <h1>Child Help in Tanzania (CHITA) <span>Procurement & Management System</span></h1>

@@ -10,14 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --c-dark: #392a28;
-            --c-primary: #246a73;
-            --c-accent: #368f8b;
-            --c-light: #f3dfc1;
-            --c-border: #ddbea8;
+            --c-dark: #246a73;          /* Blue theme base */
+            --c-primary: #1b5158;       /* Darker blue accent */
+            --c-accent: #f59e0b;        /* Orange brand highlight */
+            --c-light: #fef3c7;         /* Light orange tint */
+            --c-border: #cbd5e1;
             --bg-main: #faf9f6;
-            --text-main: #392a28;
-            --text-muted: #6b5b59;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --radius-lg: 12px;
             --radius-md: 8px;
         }
@@ -46,7 +46,7 @@
         }
 
         .back-link {
-            color: var(--c-primary);
+            color: var(--c-dark);
             text-decoration: none;
             font-size: 13px;
             font-weight: 700;
@@ -59,6 +59,7 @@
             border: none;
             background: transparent;
             font-family: inherit;
+            transition: 0.2s;
         }
 
         .back-link:hover {
@@ -83,19 +84,18 @@
             margin-bottom: 20px;
         }
 
-        /* FAINT DIVISION LINE ARCHITECTURE */
+        /* ORANGE POP LINE ARCHITECTURE */
         .page-header .divider {
-            height: 1px;
+            height: 2px;
             width: 100%;
-            /* Uses a highly transparent, muted teal variant to unify the tone cleanly */
-            background: rgba(36, 106, 115, 0.15);
+            background: linear-gradient(to right, var(--c-accent), rgba(245, 158, 11, 0.05));
         }
 
         .card {
             background: white;
             border-radius: var(--radius-lg);
             border: 1px solid var(--c-border);
-            box-shadow: 0 4px 12px rgba(57, 42, 40, 0.03);
+            box-shadow: 0 4px 12px rgba(36, 106, 115, 0.03);
             margin-bottom: 24px;
         }
 
@@ -155,15 +155,15 @@
         }
 
         .form-select-card:hover {
-            border-color: var(--c-primary);
-            background: rgba(36, 106, 115, 0.02);
+            border-color: var(--c-accent);
+            background: rgba(36, 106, 115, 0.01);
             transform: translateY(-2px);
         }
 
         .form-select-card h3 {
             font-size: 14px;
             font-weight: 700;
-            color: var(--c-dark);
+            color: var(--text-main);
             margin-bottom: 6px;
         }
 
@@ -199,7 +199,7 @@
             border-radius: var(--radius-md);
             font-family: inherit;
             font-size: 13px;
-            color: var(--c-dark);
+            color: var(--text-main);
             background: var(--bg-main);
             transition: 0.2s;
         }
@@ -207,11 +207,11 @@
         input:focus,
         textarea:focus {
             outline: none;
-            border-color: var(--c-primary);
+            border-color: var(--c-accent);
             background: white;
         }
 
-        /* CATHETER SIZE MATRIX TABLE */
+        /* MATRIX TABLE STYLING */
         .size-matrix {
             width: 100%;
             border-collapse: collapse;
@@ -222,19 +222,27 @@
             font-size: 11px;
             text-transform: uppercase;
             color: var(--text-muted);
-            padding: 8px;
+            padding: 10px 8px;
             text-align: left;
             font-weight: 700;
             letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--c-border);
         }
 
         .size-matrix td {
-            padding: 6px 8px;
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--c-border);
+        }
+
+        .size-matrix tr:last-child td {
+            border-bottom: none;
         }
 
         .size-matrix input[type="number"] {
             padding: 8px;
             background: white;
+            width: 100%;
+            max-width: 140px;
         }
 
         .btn {
@@ -248,18 +256,22 @@
         }
 
         .btn-p {
-            background: var(--c-primary);
+            background: var(--c-dark);
             color: white;
         }
 
         .btn-p:hover {
-            background: var(--c-accent);
+            background: var(--c-primary);
         }
 
         .btn-ghost {
             background: transparent;
             border: 1px solid var(--c-border);
-            color: var(--c-dark);
+            color: var(--text-main);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(0,0,0,0.02);
         }
 
         @media (max-width: 768px) {
@@ -270,6 +282,18 @@
             .form-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--c-border);
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
     </style>
 </head>
@@ -285,170 +309,99 @@
 
         <div class="page-header">
             <h1 id="mainRegistryTitle">Forms Intake Registry</h1>
-            <p id="mainRegistrySubtitle">Select an administrative or clinical operational template to begin data
-                collection.</p>
+            <p id="mainRegistrySubtitle">Select an administrative or clinical operational template to begin data collection.</p>
             <div class="divider"></div>
         </div>
 
+        <!-- MAIN DASHBOARD CARD GRID -->
         <div id="pane-all" class="form-pane active">
             <div class="form-grid">
                 <div class="form-select-card" onclick="switchForm('catheter')">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                        <span
-                            style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-primary); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical
-                            Supply</span>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-dark); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical Supply</span>
                     </div>
                     <h3>Medical Materials Application (Cones)</h3>
                     <p>Request cone catheter supplies from Child-Help International distribution networks.</p>
                 </div>
 
                 <div class="form-select-card" onclick="switchForm('catheter-sizes')">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                        <span
-                            style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-primary); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical
-                            Supply</span>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-dark); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical Supply</span>
                     </div>
                     <h3>Medical Materials Application (Catheters)</h3>
-                    <p>Request sizing-specific pediatric catheters broken down by CH metrics and tube lengths.</p>
+                    <p>Request sizing-specific catheters broken down by CH metrics and tube lengths.</p>
                 </div>
 
                 <div class="form-select-card" onclick="switchForm('enema')">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                        <span
-                            style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-primary); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical
-                            Supply</span>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-dark); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Medical Supply</span>
                     </div>
                     <h3>Medical Materials Application (Enema Bags)</h3>
                     <p>Request supportive bowel management supply units for distribution center logistics.</p>
                 </div>
 
                 <div class="form-select-card" onclick="switchForm('oxybutynin')">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                        <span
-                            style="font-size: 9px; font-weight: 800; background: rgba(54, 143, 139, 0.1); color: var(--c-accent); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Pharmaceutical</span>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(245, 158, 11, 0.1); color: var(--c-dark); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Pharmaceutical</span>
                     </div>
                     <h3>Medical Materials Application (Oxybutynin)</h3>
                     <p>Request capsule allocations for neurogenic bladder management and urological care plans.</p>
                 </div>
+
+                <div class="form-select-card" onclick="switchForm('shunt')">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 9px; font-weight: 800; background: rgba(36, 106, 115, 0.1); color: var(--c-dark); padding: 3px 6px; border-radius: 4px; text-transform: uppercase;">Surgical Supply</span>
+                    </div>
+                    <h3>Medical Materials Application (Shunts)</h3>
+                    <p>Request shunts by pressure profile, external drainage (EVD) pathways, and reservoirs.</p>
+                </div>
             </div>
         </div>
 
+        <!-- PANEL 1: CATHETER CONES -->
         <div id="pane-catheter" class="form-pane">
             <div class="card">
                 <div class="ch">
                     <span>Application Form Setup — Cones</span>
-                    <span
-                        style="font-size: 10px; background: var(--c-primary); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help
-                        International</span>
+                    <span style="font-size: 10px; background: var(--c-dark); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help International</span>
                 </div>
                 <div class="cb">
-                    <form id="catheterForm"
-                        onsubmit="event.preventDefault(); alert('Cones Application Form successfully logged.'); window.location.href='admin.html';">
-
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            1. Applicant Information
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Project / Applicant Name</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Full Address</label>
-                                <textarea rows="2" required></textarea>
-                            </div>
-                            <div class="field-group">
-                                <label>Country</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Contact Person</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Email Address</label>
-                                <input type="email" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Phone Number</label>
-                                <input type="tel" required>
-                            </div>
+                    <form id="catheterForm" onsubmit="event.preventDefault(); alert('Cones Application Form successfully logged.'); window.location.href='admin.html';">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">1. Applicant Information</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div style="grid-column: span 2;" class="field-group"><label>Project / Applicant Name</label><input type="text" required></div>
+                            <div style="grid-column: span 2;" class="field-group"><label>Full Address</label><textarea rows="2" required></textarea></div>
+                            <div class="field-group"><label>Country</label><input type="text" required></div>
+                            <div class="field-group"><label>Contact Person</label><input type="text" required></div>
+                            <div class="field-group"><label>Email Address</label><input type="email" required></div>
+                            <div class="field-group"><label>Phone Number</label><input type="tel" required></div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            2. Clinical Oversight
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div class="field-group">
-                                <label>Name of Doctor in Charge</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Name of Nurse in Charge of CIC</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Estimated # of children seen per year with Spina Bifida (with or without
-                                    Hydrocephalus)</label>
-                                <input type="number" min="0" required>
-                            </div>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">2. Clinical Oversight</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div class="field-group"><label>Name of Doctor in Charge</label><input type="text" required></div>
+                            <div class="field-group"><label>Name of Nurse in Charge of CIC</label><input type="text" required></div>
+                            <div style="grid-column: span 2;" class="field-group"><label>Estimated # of children seen per year with Spina Bifida</label><input type="number" min="0" required></div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            3. Requested Materials
-                        </h3>
-                        <div
-                            style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px;">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">3. Requested Materials</h3>
+                        <div style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px;">
                             <div class="field-group" style="margin-bottom: 0;">
                                 <label>Total Catheter Units (Cones) Requested</label>
                                 <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                                     <input type="number" min="1" placeholder="e.g. 500" required style="width: 160px;">
-                                    <span
-                                        style="font-size: 11px; color: var(--text-muted); font-style: italic;">*Sourced
-                                        directly via verified pipeline supply centers in China or India.</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); font-style: italic;">*Sourced directly via verified pipeline supply centers.</span>
                                 </div>
                             </div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            4. Regulatory Compliance Agreement
-                        </h3>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">4. Regulatory Compliance Agreement</h3>
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I confirm that these catheters will be used strictly for children whose parents
-                                    cannot afford to pay.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I agree that under no condition will these materials yield any financial profit by
-                                    selling them or by charging parents for the items.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I commit to reporting directly to Child-Help International on the exact usage
-                                    using the provided tracking metrics.</span>
-                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-main); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal;"><input type="checkbox" required style="margin-top: 3px; accent-color: var(--c-dark);"> <span>I confirm that these catheters will be used strictly for children whose parents cannot afford to pay.</span></label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-main); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal;"><input type="checkbox" required style="margin-top: 3px; accent-color: var(--c-dark);"> <span>I agree that under no condition will these materials yield any financial profit.</span></label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-main); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal;"><input type="checkbox" required style="margin-top: 3px; accent-color: var(--c-dark);"> <span>I commit to reporting directly to Child-Help International on execution metrics.</span></label>
                         </div>
-
-                        <div
-                            style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
                             <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
                             <button type="submit" class="btn btn-p">Log Application</button>
                         </div>
@@ -457,145 +410,52 @@
             </div>
         </div>
 
+        <!-- PANEL 2: SIZED CATHETERS -->
         <div id="pane-catheter-sizes" class="form-pane">
             <div class="card">
                 <div class="ch">
                     <span>Application Form Setup — Sized Catheters</span>
-                    <span
-                        style="font-size: 10px; background: var(--c-primary); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help
-                        International</span>
+                    <span style="font-size: 10px; background: var(--c-dark); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help International</span>
                 </div>
                 <div class="cb">
-                    <form id="catheterSizesForm"
-                        onsubmit="event.preventDefault(); alert('Sized Catheters Application Form successfully logged.'); window.location.href='admin.html';">
-
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            1. Applicant Information
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Project / Applicant Name</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Full Address</label>
-                                <textarea rows="2" required></textarea>
-                            </div>
-                            <div class="field-group">
-                                <label>Country</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Contact Person</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Email Address</label>
-                                <input type="email" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Phone Number</label>
-                                <input type="tel" required>
-                            </div>
+                    <form id="catheterSizesForm" onsubmit="event.preventDefault(); alert('Sized Catheters Application Form successfully logged.'); window.location.href='admin.html';">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">1. Applicant Information</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div style="grid-column: span 2;" class="field-group"><label>Project / Applicant Name</label><input type="text" required></div>
+                            <div style="grid-column: span 2;" class="field-group"><label>Full Address</label><textarea rows="2" required></textarea></div>
+                            <div class="field-group"><label>Country</label><input type="text" required></div>
+                            <div class="field-group"><label>Contact Person</label><input type="text" required></div>
+                            <div class="field-group"><label>Email Address</label><input type="email" required></div>
+                            <div class="field-group"><label>Phone Number</label><input type="tel" required></div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            2. Clinical Oversight
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div class="field-group">
-                                <label>Name of Doctor in Charge</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Name of Nurse in Charge of CIC</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Estimated # of children seen per year with Spina Bifida (with or without
-                                    Hydrocephalus)</label>
-                                <input type="number" min="0" required>
-                            </div>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">2. Clinical Oversight</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div class="field-group"><label>Name of Doctor in Charge</label><input type="text" required></div>
+                            <div class="field-group"><label>Name of Nurse in Charge of CIC</label><input type="text" required></div>
+                            <div style="grid-column: span 2;" class="field-group"><label>Estimated # of children seen per year with Spina Bifida</label><input type="number" min="0" required></div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            3. Requested Catheters Sizing Matrix
-                        </h3>
-                        <div
-                            style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px; overflow-x: auto;">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">3. Requested Catheters Sizing Matrix</h3>
+                        <div style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px; overflow-x: auto;">
                             <table class="size-matrix">
                                 <thead>
-                                    <tr>
-                                        <th>Catheter Gauge</th>
-                                        <th>Short Variant (18cm)</th>
-                                        <th>Long Variant (41cm)</th>
-                                    </tr>
+                                    <tr><th>Catheter Gauge</th><th>Short Variant (18cm)</th><th>Long Variant (41cm)</th></tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td style="font-size: 13px; font-weight: 600; color: var(--c-dark);">CH8</td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-size: 13px; font-weight: 600; color: var(--c-dark);">CH10</td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-size: 13px; font-weight: 600; color: var(--c-dark);">CH12</td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-size: 13px; font-weight: 600; color: var(--c-dark);">CH14</td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                        <td><input type="number" min="0" placeholder="Quantity"></td>
-                                    </tr>
+                                    <tr><td style="font-size: 13px; font-weight: 600; color: var(--text-main);">CH8</td><td><input type="number" min="0" placeholder="Quantity"></td><td><input type="number" min="0" placeholder="Quantity"></td></tr>
+                                    <tr><td style="font-size: 13px; font-weight: 600; color: var(--text-main);">CH10</td><td><input type="number" min="0" placeholder="Quantity"></td><td><input type="number" min="0" placeholder="Quantity"></td></tr>
+                                    <tr><td style="font-size: 13px; font-weight: 600; color: var(--text-main);">CH12</td><td><input type="number" min="0" placeholder="Quantity"></td><td><input type="number" min="0" placeholder="Quantity"></td></tr>
+                                    <tr><td style="font-size: 13px; font-weight: 600; color: var(--text-main);">CH14</td><td><input type="number" min="0" placeholder="Quantity"></td><td><input type="number" min="0" placeholder="Quantity"></td></tr>
                                 </tbody>
                             </table>
-                            <div
-                                style="margin-top: 14px; font-size: 11px; color: var(--text-muted); font-style: italic; line-height: 1.4;">
-                                *Sourced directly via verified pipeline supply centers in China or India. Leave fields
-                                blank if specific gauge is not requested.
-                            </div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            4. Regulatory Compliance Agreement
-                        </h3>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">4. Regulatory Compliance Agreement</h3>
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I confirm that these catheters will be used strictly for children whose parents
-                                    cannot afford to pay.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I agree that under no condition will these materials yield any financial profit by
-                                    selling them or by charging parents for the items.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I commit to reporting directly to Child-Help International on the exact usage
-                                    using the provided tracking metrics.</span>
-                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-main); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal;"><input type="checkbox" required style="margin-top: 3px; accent-color: var(--c-dark);"> <span>I confirm that these materials will be used strictly for non-profit welfare.</span></label>
                         </div>
-
-                        <div
-                            style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
                             <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
                             <button type="submit" class="btn btn-p">Log Application</button>
                         </div>
@@ -604,118 +464,30 @@
             </div>
         </div>
 
+        <!-- PANEL 3: ENEMA BAGS -->
         <div id="pane-enema" class="form-pane">
             <div class="card">
                 <div class="ch">
                     <span>Application Form Setup — Enema Bags</span>
-                    <span
-                        style="font-size: 10px; background: var(--c-primary); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help
-                        International</span>
+                    <span style="font-size: 10px; background: var(--c-dark); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help International</span>
                 </div>
                 <div class="cb">
-                    <form id="enemaForm"
-                        onsubmit="event.preventDefault(); alert('Enema Bags Application Form successfully logged.'); window.location.href='admin.html';">
-
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            1. Applicant Information
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Project / Applicant Name</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Full Address</label>
-                                <textarea rows="2" required></textarea>
-                            </div>
-                            <div class="field-group">
-                                <label>Country</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Contact Person</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Email Address</label>
-                                <input type="email" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Phone Number</label>
-                                <input type="tel" required>
-                            </div>
+                    <form id="enemaForm" onsubmit="event.preventDefault(); alert('Enema Bags Application Form successfully logged.'); window.location.href='admin.html';">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">1. Applicant Information</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div style="grid-column: span 2;" class="field-group"><label>Project / Applicant Name</label><input type="text" required></div>
+                            <div class="field-group"><label>Country</label><input type="text" required></div>
+                            <div class="field-group"><label>Contact Person</label><input type="text" required></div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            2. Clinical Oversight
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div class="field-group">
-                                <label>Name of Doctor in Charge</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Name of Nurse in Charge of CIC</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Estimated # of children seen per year with Spina Bifida (with or without
-                                    Hydrocephalus)</label>
-                                <input type="number" min="0" required>
-                            </div>
-                        </div>
-
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            3. Requested Materials
-                        </h3>
-                        <div
-                            style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px;">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">2. Requested Materials</h3>
+                        <div style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px;">
                             <div class="field-group" style="margin-bottom: 0;">
                                 <label>Total Enema Bag Units Requested</label>
-                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                                    <input type="number" min="1" placeholder="e.g. 250" required style="width: 160px;">
-                                    <span
-                                        style="font-size: 11px; color: var(--text-muted); font-style: italic;">*Sourced
-                                        directly via verified pipeline supply centers in China or India.</span>
-                                </div>
+                                <input type="number" min="1" placeholder="e.g. 250" required style="width: 160px;">
                             </div>
                         </div>
-
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            4. Regulatory Compliance Agreement
-                        </h3>
-                        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I confirm that these catheters/supplies will be used strictly for children whose
-                                    parents cannot afford to pay.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I agree that under no condition will these materials yield any financial profit by
-                                    selling them or by charging parents for the items.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I commit to reporting directly to Child-Help International on the exact usage
-                                    using the provided tracking metrics.</span>
-                            </label>
-                        </div>
-
-                        <div
-                            style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
                             <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
                             <button type="submit" class="btn btn-p">Log Application</button>
                         </div>
@@ -724,120 +496,113 @@
             </div>
         </div>
 
+        <!-- PANEL 4: OXYBUTYNIN -->
         <div id="pane-oxybutynin" class="form-pane">
             <div class="card">
                 <div class="ch">
                     <span>Application Form Setup — Oxybutynin in Caps</span>
-                    <span
-                        style="font-size: 10px; background: var(--c-accent); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help
-                        International</span>
+                    <span style="font-size: 10px; background: var(--c-dark); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help International</span>
                 </div>
                 <div class="cb">
-                    <form id="oxybutyninForm"
-                        onsubmit="event.preventDefault(); alert('Oxybutynin Application Form successfully logged.'); window.location.href='admin.html';">
-
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            1. Applicant Information
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Project / Applicant Name</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Full Address</label>
-                                <textarea rows="2" required></textarea>
-                            </div>
-                            <div class="field-group">
-                                <label>Country</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Contact Person</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Email Address</label>
-                                <input type="email" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Phone Number</label>
-                                <input type="tel" required>
-                            </div>
+                    <form id="oxybutyninForm" onsubmit="event.preventDefault(); alert('Oxybutynin Application Form successfully logged.'); window.location.href='admin.html';">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">1. Applicant Information</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div style="grid-column: span 2;" class="field-group"><label>Project / Applicant Name</label><input type="text" required></div>
+                            <div class="field-group"><label>Country</label><input type="text" required></div>
+                            <div class="field-group"><label>Contact Person</label><input type="text" required></div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            2. Clinical Oversight
-                        </h3>
-                        <div
-                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                            <div class="field-group">
-                                <label>Name of Doctor in Charge</label>
-                                <input type="text" required>
-                            </div>
-                            <div class="field-group">
-                                <label>Name of Nurse in Charge of CIC</label>
-                                <input type="text" required>
-                            </div>
-                            <div style="grid-column: span 2;" class="field-group">
-                                <label>Estimated # of children seen per year with Spina Bifida (with or without
-                                    Hydrocephalus)</label>
-                                <input type="number" min="0" required>
-                            </div>
-                        </div>
-
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            3. Requested Materials
-                        </h3>
-                        <div
-                            style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px;">
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">2. Requested Materials</h3>
+                        <div style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px;">
                             <div class="field-group" style="margin-bottom: 0;">
                                 <label>Total Oxybutynin Capsule Units Requested</label>
-                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                                    <input type="number" min="1" placeholder="e.g. 1000" required style="width: 160px;">
-                                    <span
-                                        style="font-size: 11px; color: var(--text-muted); font-style: italic;">*Sourced
-                                        directly via verified pipeline supply centers in China or India.</span>
-                                </div>
+                                <input type="number" min="1" placeholder="e.g. 1000" required style="width: 160px;">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                            <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
+                            <button type="submit" class="btn btn-p">Log Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL 5: SHUNT & NEUROSURGICAL GRID (NO PAEDIATRIC LABELS) -->
+        <div id="pane-shunt" class="form-pane">
+            <div class="card">
+                <div class="ch">
+                    <span>Application Form Setup — Hydrocephalus Shunts & Components</span>
+                    <span style="font-size: 10px; background: var(--c-dark); color: white; padding: 4px 8px; border-radius: 4px;">Child-Help International</span>
+                </div>
+                <div class="cb">
+                    <form id="shuntForm" onsubmit="event.preventDefault(); alert('Shunt Application Form successfully logged.'); window.location.href='admin.html';">
+
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">1. Applicant Information</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div style="grid-column: span 2;" class="field-group"><label>Project / Applicant Name</label><input type="text" required></div>
+                            <div style="grid-column: span 2;" class="field-group"><label>Full Address</label><textarea rows="2" required></textarea></div>
+                            <div class="field-group"><label>Country</label><input type="text" required></div>
+                            <div class="field-group"><label>Contact Person</label><input type="text" required></div>
+                            <div class="field-group"><label>Email Address</label><input type="email" required></div>
+                            <div class="field-group"><label>Phone Number</label><input type="tel" required></div>
+                        </div>
+
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">2. Clinical Oversight</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div class="field-group"><label>Name of Neurosurgeon / Doctor in Charge</label><input type="text" required></div>
+                            <div class="field-group"><label>Name of Theatre Nurse / Clinic Coordinator</label><input type="text" required></div>
+                            <div class="field-group"><label>Estimated # of children seen per year with Hydrocephalus</label><input type="number" min="0" required></div>
+                            <div class="field-group"><label>Estimated # of children seen per year with Spina Bifida (with or without hydrocephalus)</label><input type="number" min="0" required></div>
+                        </div>
+
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">3. Requested Materials Matrix</h3>
+                        <div style="background: var(--bg-main); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--c-border); margin-bottom: 24px; overflow-x: auto;">
+                            <table class="size-matrix">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 60%;">Surgical Material / Component Type</th>
+                                        <th style="width: 40%;">Requested Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size: 13px; font-weight: 600; color: var(--text-main);">Shunt System — Low Pressure</td>
+                                        <td><input type="number" min="0" placeholder="Quantity"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: 13px; font-weight: 600; color: var(--text-main);">Shunt System — Medium Pressure</td>
+                                        <td><input type="number" min="0" placeholder="Quantity"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: 13px; font-weight: 600; color: var(--text-main);">Shunt System — High Pressure</td>
+                                        <td><input type="number" min="0" placeholder="Quantity"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: 13px; font-weight: 600; color: var(--text-main);">External Drainage System (EVD)</td>
+                                        <td><input type="number" min="0" placeholder="Quantity"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: 13px; font-weight: 600; color: var(--text-main);">Cerebral Catheter Reservoir (Small)</td>
+                                        <td><input type="number" min="0" placeholder="Quantity"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="margin-top: 14px; font-size: 11px; color: var(--text-muted); font-style: italic; line-height: 1.4;">
+                                *Sourced directly via verified pipeline surgical supply pathways. Leave fields blank if specific configurations or systems are not required.
                             </div>
                         </div>
 
-                        <h3
-                            style="font-size: 12px; font-weight: 800; color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border);">
-                            4. Regulatory Compliance Agreement
-                        </h3>
+                        <h3 style="font-size: 12px; font-weight: 800; color: var(--c-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; padding-bottom: 6px; border-bottom: 2px solid var(--c-accent);">4. Regulatory Compliance Agreement</h3>
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I confirm that these supplies will be used strictly for children whose parents
-                                    cannot afford to pay.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I agree that under no condition will these materials yield any financial profit by
-                                    selling them or by charging parents for the items.</span>
-                            </label>
-                            <label
-                                style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--c-dark); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
-                                <input type="checkbox" required
-                                    style="margin-top: 3px; accent-color: var(--c-primary);">
-                                <span>I commit to reporting directly to Child-Help International on the exact usage
-                                    using the provided tracking metrics.</span>
-                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-main); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal;"><input type="checkbox" required style="margin-top: 3px; accent-color: var(--c-dark);"> <span>I confirm that these shunt systems and specialized components will be used strictly for children whose parents cannot afford to pay.</span></label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-main); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal;"><input type="checkbox" required style="margin-top: 3px; accent-color: var(--c-dark);"> <span>I agree that under no condition will these surgical materials yield any financial profit by selling them or by charging parents for the items.</span></label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text-main); line-height: 1.5; cursor: pointer; text-transform: none; font-weight: normal;"><input type="checkbox" required style="margin-top: 3px; accent-color: var(--c-dark);"> <span>I commit to reporting directly to Child-Help International on surgical outcome data and tracking deployment metrics.</span></label>
                         </div>
 
-                        <div
-                            style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--c-border); padding-top: 20px;">
                             <button type="button" class="btn btn-ghost" onclick="switchForm('all')">Cancel</button>
-                            <button type="submit" class="btn btn-accent" style="color: white;">Log Application</button>
+                            <button type="submit" class="btn btn-p">Log Application</button>
                         </div>
                     </form>
                 </div>
@@ -848,18 +613,14 @@
     <footer>
         <p>CHITA Supply Registry © 2026 Child-Help International</p>
         <p>
-            <a href="mailto:janet.manoni@child-help.international"
-                style="color: var(--c-primary); text-decoration: none; font-weight: 700;">Contact Support</a> |
+            <a href="mailto:janet.manoni@child-help.international" style="color: var(--c-dark); text-decoration: none; font-weight: 700;">Contact Support</a> |
             <a href="#" style="color: var(--text-muted); text-decoration: none;">Clinical Sizing Guidelines</a>
         </p>
     </footer>
-    </div>
 
     <script>
-        // Tracks the currently active form panel ID
         let currentFormId = 'all';
 
-        // Handles conditional back behavior depending on the application context state
         function handleBackNavigation() {
             if (currentFormId === 'all') {
                 window.location.href = 'admin.html';
@@ -868,26 +629,21 @@
             }
         }
 
-        // Smoothly updates content tags, headers, and active layers
         function switchForm(formId) {
             currentFormId = formId;
 
-            // Remove active flag from all form segments
             document.querySelectorAll('.form-pane').forEach(pane => pane.classList.remove('active'));
 
-            // Activate target container layer
             const targetPane = document.getElementById('pane-' + formId);
             if (targetPane) {
                 targetPane.classList.add('active');
-                window.location.hash = formId; // Updates browser navigation history trace
+                window.location.hash = formId;
             }
 
-            // Target Header elements
             const titleEl = document.getElementById('mainRegistryTitle');
             const subEl = document.getElementById('mainRegistrySubtitle');
             const backBtn = document.getElementById('dynamicBackBtn');
 
-            // Dynamically synchronize headers and navigation text based on current form context
             if (formId === 'all') {
                 titleEl.innerText = "Forms Intake Registry";
                 subEl.innerText = "Select an administrative or clinical operational template to begin data collection.";
@@ -898,7 +654,7 @@
                 switch (formId) {
                     case 'catheter':
                         titleEl.innerText = "Application for Medical Materials (Cones)";
-                        subEl.innerText = "Distribution pipeline processing template for non-sized pediatric cone catheters.";
+                        subEl.innerText = "Distribution pipeline processing template for non-sized cone catheters.";
                         break;
                     case 'catheter-sizes':
                         titleEl.innerText = "Application for Medical Materials (Catheters)";
@@ -912,11 +668,14 @@
                         titleEl.innerText = "Application for Medical Materials (Oxybutynin)";
                         subEl.innerText = "Pharmaceutical supply line ingestion configuration form for capsule items.";
                         break;
+                    case 'shunt':
+                        titleEl.innerText = "Application for Surgical Materials (Shunts)";
+                        subEl.innerText = "Hydrocephalus shunt allocation template for valve profiles, EVD pathways, and reservoirs.";
+                        break;
                 }
             }
         }
 
-        // Monitors system deep links and routing execution parameters on load
         window.addEventListener('DOMContentLoaded', () => {
             const initialHash = window.location.hash.replace('#', '');
             if (initialHash && document.getElementById('pane-' + initialHash)) {

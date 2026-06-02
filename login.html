@@ -9,12 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --c-dark: #392a28;
-      --c-primary: #246a73;
-      --c-light: #f3dfc1;
-      --c-border: #ddbea8;
-      --bg-main: #faf9f6;
-      --text-muted: #6b5b59;
+      --c-dark: #071013;       
+      --c-primary: #456990;    /* Steel Blue (75% Framework) */
+      --c-accent: #fa8c3f;     /* Safety Orange (Brand Accent) */
+      --c-light: #eaf6ff;      
+      --c-border: #dfe0e2;     
+      --bg-main: var(--c-light);
+      --text-muted: #5c6466;   
       --radius-md: 8px;
     }
 
@@ -31,7 +32,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* THE DESKTOP SPLIT LAYOUT (SIDE-BY-SIDE) */
     .login-split {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
@@ -40,12 +40,19 @@
     }
 
     .login-visual {
-      background: var(--c-dark);
+      background: var(--c-primary); 
       padding: 80px;
-      color: var(--c-light);
+      color: white;
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+
+    .login-visual h2 {
+      color: var(--c-accent);
+      font-size: 36px;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
     }
 
     .login-form-area {
@@ -70,10 +77,12 @@
       outline: none;
       transition: 0.2s;
       font-family: inherit;
+      color: var(--c-dark);
     }
 
     input:focus {
-      border-color: var(--c-primary);
+      border-color: var(--c-accent); 
+      box-shadow: 0 0 0 3px rgba(250, 140, 63, 0.15);
     }
 
     .btn {
@@ -90,12 +99,13 @@
     }
 
     .btn-p {
-      background: var(--c-primary);
+      background: var(--c-primary); 
       color: white;
     }
 
     .btn-p:hover {
-      background: #368f8b;
+      background: var(--c-accent); 
+      box-shadow: 0 4px 12px rgba(250, 140, 63, 0.2);
     }
 
     @keyframes fadeIn {
@@ -103,22 +113,21 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* THE HORIZONTAL RESPONSIVE COOKING LAYER */
     @media (max-width: 768px) {
       .login-split {
-        grid-template-columns: 1fr; /* Switch from 2 columns to a single column block */
-        grid-template-rows: auto 1fr; /* Top gets auto height, form area gets remaining space */
+        grid-template-columns: 1fr; 
+        grid-template-rows: auto 1fr; 
       }
 
       .login-visual {
-        padding: 40px 24px; /* Tighten up spacing since it's a top banner now */
+        padding: 40px 24px; 
         text-align: center;
         justify-content: center;
         align-items: center;
       }
 
       .login-visual h2 {
-        font-size: 24px !important; /* Scale down heading slightly on small screens */
+        font-size: 24px !important; 
         margin-bottom: 8px !important;
       }
 
@@ -128,7 +137,7 @@
 
       .login-form-area {
         padding: 40px 24px;
-        align-items: flex-start; /* Keeps the login box near the top on scrollable mobile screens */
+        align-items: flex-start; 
       }
 
       .login-box {
@@ -141,23 +150,25 @@
 
   <div class="login-split">
     <div class="login-visual">
-      <h2 style="font-size:36px; margin-bottom:20px; letter-spacing:-1px">CHITA Procurement and Supply Chain Portal</h2>
-      <p style="font-size:18px; opacity:0.8; line-height:1.6"><i>Authorized Personnel Only</i></p>
+      <h2>CHITA Procurement and Supply Chain Portal</h2>
+      <p style="font-size:18px; opacity:0.8; line-height:1.6; font-weight: 500;"><i>Authorized Personnel Only</i></p>
     </div>
     
     <div class="login-form-area">
       <div class="login-box" style="display: flex; flex-direction: column; align-items: flex-start;">
         <img src="assets/Child-Help-Logo.png" alt="Logo" style="height: 54px; margin-bottom: 32px; width: auto;">
-        <h3 style="font-size:24px; margin-bottom:32px; color:var(--c-dark)">Sign In</h3>
+        
+        <div style="width: 24px; height: 4px; background: var(--c-accent); margin-bottom: 8px; border-radius: 2px;"></div>
+        <h3 style="font-size:24px; margin-bottom:32px; color:var(--c-dark); font-weight:800;">Sign In</h3>
 
         <input type="email" placeholder="Email Address" value="admin@mbuyunihosp.co.tz">
         <input type="password" placeholder="Password" value="••••••••">
 
-        <a href="admin.html" class="btn btn-p" style="width:100%; margin-bottom: 20px;">Enter Platform</a>
+        <a href="modules.html" class="btn btn-p" style="width:100%; margin-bottom: 20px;">Enter Platform</a>
 
         <div style="width: 100%; text-align: center; font-size: 13px; color: var(--text-muted);">
           Don't have an account?
-          <a href="register.html" style="color: var(--c-primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px;">
+          <a href="register.html" style="color: var(--c-accent); font-weight: 700; text-decoration: underline; text-underline-offset: 4px;">
             Register here
           </a>
         </div>
